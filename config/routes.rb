@@ -5,7 +5,9 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   resources :matrices do
-    resources :categories
+    resources :categories do
+      resources :options
+    end
   end
 
   # You can have the root of your site routed with "root"
