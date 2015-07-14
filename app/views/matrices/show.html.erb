@@ -7,22 +7,6 @@
 </p>
 -->
 
-<hr/>
-
-<h2>Categories</h2>
-<%= render @matrix.categories %>
-
-<br/>
-
-<hr/>
-
-<h2>Add a category</h2>
-<%= render 'categories/form' %>
-
-<hr/>
-
-<h2>Matrix</h2>
-
 <table border="1">
 	<tr>
 		<th rowspan="2" colspan="2"></th>
@@ -52,7 +36,7 @@
 			<% end %>
 			<th><%= option.name %></th>
 				<% for i in 1..((numCategories - 1) * numOptions ) %>
-					<td>&nbsp;</td>
+					<td class="cell">&nbsp;</td>
 				<% end %>
 			</th>
 		</tr>
@@ -69,7 +53,7 @@
 						<% end %>
 						<th><%= option.name %></th>
 						<% for i in 1..((numCategories - index - 1) * numOptions) %>
-							<td>&nbsp;</td>
+							<td class="cell">&nbsp;</td>
 						<% end %>
 					</tr>	
 				<% end %>
@@ -79,6 +63,18 @@
 </table>
 
 <br/>
+
+<hr/>
+
+<h2>Categories</h2>
+<%= render @matrix.categories %>
+
+<br/>
+
+<hr/>
+
+<h2>Add a category</h2>
+<%= render 'categories/form' %>
 
 <hr/>
 
