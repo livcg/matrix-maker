@@ -26,3 +26,16 @@
 
 <%= link_to 'Edit', edit_matrix_path(@matrix) %> |
 <%= link_to 'Back', matrices_path %>
+
+<hr/>
+
+<h2>Matrix</h2>
+
+<table border="1">
+	<tr>
+		<th></th>
+		<% @matrix.categories.each do |category| %>
+			<th><%= category.name %></th>
+		<% end %>
+	</tr>
+</table>

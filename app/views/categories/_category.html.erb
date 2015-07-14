@@ -1,6 +1,6 @@
 <%= category.name %><!--*** - Option: <%= category.option %> -->
-	<%= link_to '[Edit]', edit_matrix_category_path(category.matrix, category) %>
-	<%= link_to '[Delete]', [category.matrix, category],
+	<%= link_to '[edit]', edit_matrix_category_path(category.matrix, category) %>
+	<%= link_to '[delete]', [category.matrix, category],
 				method: :delete,
 				data: { confirm: 'Are you sure?' } %>
 <br/>
