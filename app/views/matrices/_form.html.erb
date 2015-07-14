@@ -1,0 +1,39 @@
+<%= form_for :matrix, url: matrices_path(@matrix) do |f| %>
+
+	<style>
+	<!--*** -->
+	.field_with_errors {
+		background-color: red;
+	}
+	</style>
+
+	<% if @matrix.errors.any? %>
+		<div id="error_explanation" style="background-color: red">
+			<h2>
+				<%= pluralize(@matrix.errors.count, "error") %>
+				this matrix from being saved:
+			</h2>
+			<ul>
+				<% @matrix.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>				
+			</ul>
+		</div>
+	<% end %>
+
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+ 
+<!--***
+  <p>
+    <%= f.label :category %><br>
+    <%= f.text_area :category %>
+  </p>
+-->
+ 
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>

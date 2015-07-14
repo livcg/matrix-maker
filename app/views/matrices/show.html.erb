@@ -1,0 +1,28 @@
+<p>
+  <strong>Name:</strong>
+  <%= @matrix.name %>
+</p>
+ 
+<!--***
+<p>
+  <strong>Category:</strong>
+  <%= @matrix.category %>
+</p>
+-->
+
+<hr/>
+
+<h2>Categories</h2>
+<%= render @matrix.categories %>
+
+<br/>
+
+<hr/>
+
+<h2>Add a category</h2>
+<%= render 'categories/form' %>
+
+<hr/>
+
+<%= link_to 'Edit', edit_matrix_path(@matrix) %> |
+<%= link_to 'Back', matrices_path %>
