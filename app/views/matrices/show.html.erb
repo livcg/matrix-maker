@@ -25,10 +25,19 @@
 
 <table border="1">
 	<tr>
-		<th></th>
+		<th rowspan="2"></th>
 		<% @matrix.categories.each_with_index do |category, index| %>
 			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
 				<th colspan="<%= category.options.count %>"><%= category.name %></th>
+			<% end %>
+		<% end %>
+	</tr>
+	<tr>
+		<% @matrix.categories.each_with_index do |category, index| %>
+			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
+				<% category.options.each do |option| %>
+					<th><%= option.name %></th>
+				<% end %>
 			<% end %>
 		<% end %>
 	</tr>
