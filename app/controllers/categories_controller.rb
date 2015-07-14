@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
 		if @category.save
 			redirect_to matrix_path(@matrix)
 		else
-			render 'new' #*** Changs
+			render 'new' #*** ?
 		end
 	end
 
@@ -19,7 +19,7 @@ class CategoriesController < ApplicationController
 		@matrix = Matrix.find(params[:matrix_id])
 		@category = @matrix.categories.find(params[:id])
 		if @category.update(category_params)
-			redirect_to @matrix
+			redirect_to @matrix #*** ? or to show?
 		else
 			render 'edit'
 		end

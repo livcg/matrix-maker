@@ -3,13 +3,35 @@
 <%= form_for :category, 
 			url: matrix_category_path(@matrix, @category),
 			method: :patch do |f| %>
-  <p>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.submit %>
-  </p>
+
+	<%# *** %>
+	<style>
+	.field_with_errors {
+		background-color: red;
+	}
+	</style>
+
+	<% if @category.errors.any? %>
+		<div id="error_explanation" style="background-color: red">
+			<h2>
+				<%= pluralize(@category.errors.count, "error") %>
+				in this category prevented it from being saved:
+			</h2>
+			<ul>
+				<% @category.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>				
+			</ul>
+		</div>
+	<% end %>
+
+	<p>
+	<%= f.label :name %><br>
+	<%= f.text_field :name %>
+	</p>
+	<p>
+	<%= f.submit %>
+	</p>
 <% end %>
 
 <%= link_to 'Back', matrix_category_path %>
