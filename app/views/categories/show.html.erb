@@ -1,0 +1,27 @@
+<h2>Category <%= @category.name %></h2>
+
+<p>
+	Matrix: <%= @matrix.name %><br/>
+	Options:
+		<ul>
+			<% @category.options.each do |option| %>
+				<li><%= option.name %></li>
+			<% end %>
+		</ul>
+</p>
+
+<h3>Add an option</h3>
+<%= form_for([@matrix, @category, @category.options.build]) do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.submit %> <%# Update Category button should be Add Option? %>
+  </p>
+<% end %>
+
+<hr/>
+
+<%= link_to 'Edit Category', edit_matrix_category_path(@category.matrix, @category) %>
+

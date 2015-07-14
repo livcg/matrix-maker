@@ -1,5 +1,10 @@
 class CategoriesController < ApplicationController
 
+	def show
+		@matrix = Matrix.find(params[:matrix_id])
+		@category = @matrix.categories.find(params[:id])
+	end
+
 	def edit
 		@matrix = Matrix.find(params[:matrix_id])
 		@category = @matrix.categories.find(params[:id])
@@ -19,7 +24,7 @@ class CategoriesController < ApplicationController
 		@matrix = Matrix.find(params[:matrix_id])
 		@category = @matrix.categories.find(params[:id])
 		if @category.update(category_params)
-			redirect_to @matrix #*** ? or to show?
+			render 'show'
 		else
 			render 'edit'
 		end
