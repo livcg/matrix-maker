@@ -44,25 +44,24 @@
 		<% end %>
 	</tr>
 
-	<% categoryCount = @matrix.categories.count %> <%# ick %>	
+	<% numCategories = @matrix.categories.count %> <%# ick %>	
 
 	<tr>
 		<th><%= @matrix.categories.first.name %></th>
-		<% for i in 1..(categoryCount - 1) %>
-			<td>blah</td>
+		<% for i in 1..(numCategories - 1) %>
+			<td>&nbsp;</td>
 		<% end %>
 	</tr>
 
-	<% @matrix.categories.reverse.each do |category| %>
-		<% if categoryCount == 1 %>
+	<% @matrix.categories.reverse.each_with_index do |category, index| %>
+		<% if index == numCategories - 1 %>
 			<% break %>
 		<% else %>
-			<% categoryCount -= 1 %>
 			<% if !category.nil? && !category.name.nil? %> <%# ick %>
 				<tr>
 					<th><%= category.name %></th>
-					<% for i in 1..categoryCount %>
-						<td>blah</td>
+					<% for i in 1..(numCategories - index - 1) %>
+						<td>&nbsp;</td>
 					<% end %>
 				</tr>	
 			<% end %>
