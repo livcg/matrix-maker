@@ -1,16 +1,15 @@
 <h2>Category <%= @category.name %></h2>
 
-<p>
-	Matrix: <%= @matrix.name %><br/>
-	Options:
-		<ul>
-			<% @category.options.each do |option| %>
-				<li><%= option.name %></li>
-			<% end %>
-		</ul>
-</p>
+<hr/>
 
-<h3>Add an option</h3>
+<h2>Options</h2>
+<% @category.options.each do |option| %>
+	<%= option.name %><br/>
+<% end %>
+
+<hr/>
+
+<h2>Add an option</h2>
 <%= form_for([@matrix, @category, @category.options.build]) do |f| %>
   <p>
     <%= f.label :name %><br>
@@ -23,5 +22,8 @@
 
 <hr/>
 
-<%= link_to 'Edit Category', edit_matrix_category_path(@category.matrix, @category) %>
+<%= link_to 'Edit Category', edit_matrix_category_path(@category.matrix, @category) %> |
+<% link_text = "Show Matrix " + @matrix.name %>
+<%= link_to link_text, matrix_path(@matrix) %>
+
 

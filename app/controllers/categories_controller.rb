@@ -13,11 +13,8 @@ class CategoriesController < ApplicationController
 	def create
 		@matrix = Matrix.find(params[:matrix_id])
 		@category = @matrix.categories.create(category_params)
-		if @category.save
-			redirect_to matrix_path(@matrix)
-		else
-			render 'new' #*** ?
-		end
+		#*** Handle when @category.save fails, e.g. blank name
+		redirect_to matrix_path(@matrix)
 	end
 
 	def update
