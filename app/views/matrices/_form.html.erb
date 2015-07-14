@@ -1,7 +1,7 @@
 <%= form_for :matrix, url: matrices_path(@matrix) do |f| %>
 
+	<%# *** %>
 	<style>
-	<!--*** -->
 	.field_with_errors {
 		background-color: red;
 	}
@@ -11,7 +11,7 @@
 		<div id="error_explanation" style="background-color: red">
 			<h2>
 				<%= pluralize(@matrix.errors.count, "error") %>
-				this matrix from being saved:
+				in this matrix prevented it from being saved:
 			</h2>
 			<ul>
 				<% @matrix.errors.full_messages.each do |msg| %>
