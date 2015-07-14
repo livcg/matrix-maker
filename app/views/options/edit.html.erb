@@ -1,0 +1,37 @@
+<h1>Edit Option</h1>
+
+<%= form_for :option, 
+			url: matrix_category_option_path(@option.category.matrix, @option.category, @option),
+			method: :patch do |f| %>
+
+	<%# *** %>
+	<style>
+	.field_with_errors {
+		background-color: red;
+	}
+	</style>
+
+	<% if @option.errors.any? %>
+		<div id="error_explanation" style="background-color: red">
+			<h2>
+				<%= pluralize(@option.errors.count, "error") %>
+				in this option prevented it from being saved:
+			</h2>
+			<ul>
+				<% @option.errors.full_messages.each do |msg| %>
+					<li><%= msg %></li>
+				<% end %>				
+			</ul>
+		</div>
+	<% end %>
+
+	<p>
+	<%= f.label :name %><br>
+	<%= f.text_field :name %>
+	</p>
+	<p>
+	<%= f.submit %>
+	</p>
+<% end %>
+
+<%= link_to 'Back', matrix_category_option_path %>

@@ -1,22 +1,32 @@
 class OptionsController < ApplicationController
 	def show
-		@category = Category.find(params[:category_id])
-		@option = @category.options.create(option_params)
+		@option = Option.find(params[:id])
 	end
 
 	def edit
-		@category = Category.find(params[:category_id])
-		@option = @category.options.create(option_params)
+		@option = Option.find(params[:id])
 	end
 
 	def create
 		@category = Category.find(params[:category_id])
 		@option = @category.options.create(option_params)
-		if @option.save
-			redirect_to matrix_category_path({id: params[:category_id]}) #*** ?
+		#*** Handle when @option.save fails
+		redirect_to matrix_category_path({id: params[:category_id]})
+	end
+
+	def update
+		@option = Option.find(params[:id])
+		if @option.update(option_params)
+			render 'show'
 		else
-			render 'show' #*** Change
+			render 'edit'
 		end
+	end
+
+	def destroy
+		@option = Option.find(params[:id])
+		@option.destroy
+		redirect_to matrix_category_path(@option.category.matrix, @option.category)
 	end
 
 	private

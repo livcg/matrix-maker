@@ -1,0 +1,12 @@
+<h2>Option <%= @option.name %></h2>
+
+<hr/>
+
+<%= link_to 'Edit Option', edit_matrix_category_option_path(@option.category.matrix, @option.category, @option) %> |
+<% link_text = "Show Category " + @option.category.name %>
+<%= link_to link_text, matrix_category_path(@option.category.matrix, @option.category) %> |
+<% link_text = "Show Matrix " + @option.category.matrix.name %>
+<%= link_to link_text, matrix_path(@option.category.matrix) %>
+
+
+

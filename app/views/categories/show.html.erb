@@ -3,9 +3,8 @@
 <hr/>
 
 <h2>Options</h2>
-<% @category.options.each do |option| %>
-	<%= option.name %><br/>
-<% end %>
+<%= render @category.options %>
+<br/>
 
 <hr/>
 

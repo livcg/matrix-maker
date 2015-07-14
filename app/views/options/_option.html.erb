@@ -1,0 +1,7 @@
+<%= option.name %>
+	<%= link_to '[show]', matrix_category_option_path(option.category.matrix, option.category, option) %>
+	<%= link_to '[edit]', edit_matrix_category_option_path(option.category.matrix, option.category, option) %>
+	<%= link_to '[delete]', [option.category.matrix, option.category, option],
+				method: :delete,
+				data: { confirm: 'Are you sure?' } %>
+<br/>
