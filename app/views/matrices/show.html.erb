@@ -26,12 +26,9 @@
 <table border="1">
 	<tr>
 		<th></th>
-		<% isFirstCategory = true %>
-		<% @matrix.categories.each do |category| %>
-			<% if !isFirstCategory && !category.nil? && !category.name.nil? %> <%# ick %>
-				<th><%= category.name %></th>
-			<% else %>	
-				<% isFirstCategory = false %>	
+		<% @matrix.categories.each_with_index do |category, index| %>
+			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
+				<th colspan="<%= category.options.count %>"><%= category.name %></th>
 			<% end %>
 		<% end %>
 	</tr>
@@ -40,7 +37,7 @@
 
 	<tr>
 		<th><%= @matrix.categories.first.name %></th>
-		<% for i in 1..(numCategories - 1) %>
+		<% for i in 1..((numCategories - 1) * @matrix.categories.first.options.count ) %>
 			<td>&nbsp;</td>
 		<% end %>
 	</tr>
@@ -52,7 +49,7 @@
 			<% if !category.nil? && !category.name.nil? %> <%# ick %>
 				<tr>
 					<th><%= category.name %></th>
-					<% for i in 1..(numCategories - index - 1) %>
+					<% for i in 1..((numCategories - index - 1) * category.options.count) %>
 						<td>&nbsp;</td>
 					<% end %>
 				</tr>	
