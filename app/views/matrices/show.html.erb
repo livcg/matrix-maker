@@ -25,7 +25,7 @@
 
 <table border="1">
 	<tr>
-		<th rowspan="2"></th>
+		<th rowspan="2" colspan="2"></th>
 		<% @matrix.categories.each_with_index do |category, index| %>
 			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
 				<th colspan="<%= category.options.count %>"><%= category.name %></th>
@@ -43,25 +43,36 @@
 	</tr>
 
 	<% numCategories = @matrix.categories.count %> <%# ick %>	
-
-	<tr>
-		<th><%= @matrix.categories.first.name %></th>
-		<% for i in 1..((numCategories - 1) * @matrix.categories.first.options.count ) %>
-			<td>&nbsp;</td>
-		<% end %>
-	</tr>
-
+	<% numOptions = @matrix.categories.first.options.count %>
+	<% firstCategory = @matrix.categories.first %>
+	<% firstCategory.options.each_with_index do |option, index| %>
+		<tr>
+			<% if index == 0 %>
+				<th rowspan="<%= numOptions %>"><%= firstCategory.name %></th>
+			<% end %>
+			<th><%= option.name %></th>
+				<% for i in 1..((numCategories - 1) * numOptions ) %>
+					<td>&nbsp;</td>
+				<% end %>
+			</th>
+		</tr>
+	<% end %>
 	<% @matrix.categories.reverse.each_with_index do |category, index| %>
 		<% if index == numCategories - 1 %>
 			<% break %>
 		<% else %>
 			<% if !category.nil? && !category.name.nil? %> <%# ick %>
-				<tr>
-					<th><%= category.name %></th>
-					<% for i in 1..((numCategories - index - 1) * category.options.count) %>
-						<td>&nbsp;</td>
-					<% end %>
-				</tr>	
+				<% category.options.each_with_index do |option, optionIndex| %>
+					<tr>
+						<% if optionIndex == 0 %>
+							<th rowspan="<%= numOptions %>"><%= category.name %></th>
+						<% end %>
+						<th><%= option.name %></th>
+						<% for i in 1..((numCategories - index - 1) * numOptions) %>
+							<td>&nbsp;</td>
+						<% end %>
+					</tr>	
+				<% end %>
 			<% end %>
 		<% end %>
 	<% end %>
