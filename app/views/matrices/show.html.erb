@@ -7,7 +7,7 @@
 </p>
 -->
 
-<table border="1">
+<table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
 	<tr>
 		<th rowspan="2" colspan="2"></th>
 		<% @matrix.categories.each_with_index do |category, index| %>
@@ -29,14 +29,20 @@
 	<% numCategories = @matrix.categories.count %> <%# ick %>	
 	<% numOptions = @matrix.categories.first.options.count %>
 	<% firstCategory = @matrix.categories.first %>
-	<% firstCategory.options.each_with_index do |option, index| %>
-		<tr>
-			<% if index == 0 %>
+	<% firstCategory.options.each_with_index do |option, optionIndex| %>
+		<tr class="oddRowGroup">
+			<% if optionIndex == 0 %>
 				<th rowspan="<%= numOptions %>"><%= firstCategory.name %></th>
 			<% end %>
 			<th><%= option.name %></th>
-				<% for i in 1..((numCategories - 1) * numOptions ) %>
-					<td class="cell">&nbsp;</td>
+				<% for index in 1..(numCategories - 1) %>
+					<% for optionIndex in 1..numOptions %>
+						<% if index.odd? %>
+							<td class="cell oddColumnGroup"></td>
+						<% else %>
+							<td class="cell evenColumnGroup"></td>
+						<% end %>
+					<% end %>
 				<% end %>
 			</th>
 		</tr>
@@ -47,13 +53,23 @@
 		<% else %>
 			<% if !category.nil? && !category.name.nil? %> <%# ick %>
 				<% category.options.each_with_index do |option, optionIndex| %>
-					<tr>
+					<% if index.odd? %>
+						<tr class="oddRowGroup">
+					<% else %>
+						<tr class="evenRowGroup">
+					<% end %>
 						<% if optionIndex == 0 %>
 							<th rowspan="<%= numOptions %>"><%= category.name %></th>
 						<% end %>
 						<th><%= option.name %></th>
-						<% for i in 1..((numCategories - index - 1) * numOptions) %>
-							<td class="cell">&nbsp;</td>
+						<% for i in 1..(numCategories - index - 1) %>
+							<% for j in 1..numOptions %>
+								<% if i.odd? %>
+									<td class="cell oddColumnGroup"></td>
+								<% else %>
+									<td class="cell evenColumnGroup"></td>
+								<% end %>
+							<% end %>
 						<% end %>
 					</tr>	
 				<% end %>
