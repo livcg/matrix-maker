@@ -31,8 +31,11 @@ TODO:
 x. Remove last column group in each row after first one
 x. Create seed data
 x. Push to Github
+x. Change from sqlite to postgres - https://devcenter.heroku.com/articles/sqlite3
+x. Include 'rails_12factor' gem
 * Deploy to Heroku
 * Add description to README
+* Fix cell toggling
 * Add info to index page
 * Fix styling
 ** Use col & colgroup elements

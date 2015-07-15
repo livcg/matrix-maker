@@ -16,10 +16,10 @@ $(document).ready ->
     i = 0
     while i < symbols.length
       if current == symbols[i]
-        $(this).html symbols[i % symbols.length] #*** Why not -1?
+        $(this).html symbols[(i - 1) % symbols.length]
         break
       i++
-    return
+    return 1
   return
 
 # ---

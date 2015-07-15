@@ -44,5 +44,7 @@ group :development, :test do
   gem 'spring'
 end
 
-gem "rspec-rails", :group => [:development, :test]
-gem "test-unit"
+gem 'rspec-rails', :group => [:development, :test]
+gem 'test-unit'
+
+gem 'rails_12factor', group: :production
