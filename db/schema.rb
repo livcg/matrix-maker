@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20150714040612) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "categories", force: :cascade do |t|
     t.string   "name"
     t.string   "option"
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(version: 20150714040612) do
     t.datetime "updated_at", null: false
   end
 
-  add_index "categories", ["matrix_id"], name: "index_categories_on_matrix_id"
+  add_index "categories", ["matrix_id"], name: "index_categories_on_matrix_id", using: :btree
 
   create_table "matrices", force: :cascade do |t|
     t.string   "name"
@@ -37,6 +40,8 @@ ActiveRecord::Schema.define(version: 20150714040612) do
     t.datetime "updated_at",  null: false
   end
 
-  add_index "options", ["category_id"], name: "index_options_on_category_id"
+  add_index "options", ["category_id"], name: "index_options_on_category_id", using: :btree
 
+  add_foreign_key "categories", "matrices"
+  add_foreign_key "options", "categories"
 end

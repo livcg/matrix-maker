@@ -30,8 +30,10 @@ Please feel free to use a different markup language if you do not plan to run
 TODO:
 x. Remove last column group in each row after first one
 x. Create seed data
-* Push to Github
+x. Push to Github
 * Deploy to Heroku
+* Add description to README
+* Add info to index page
 * Fix styling
 ** Use col & colgroup elements
 ** Use :nth-child(odd|even) props
@@ -45,3 +47,5 @@ x. Create seed data
 * Automatically sort options per category
 * Confirm deleting matrix/category deletes related options
 * Confirm setup of seeds.db; don't hardcode matrix_id's & category_id's?
+* Make /matrices the root page?
+* Build simple v2
