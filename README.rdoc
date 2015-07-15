@@ -28,4 +28,20 @@ Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
 
 TODO:
-Fix bugs when editing Matrix
+x. Remove last column group in each row after first one
+x. Create seed data
+* Push to Github
+* Deploy to Heroku
+* Fix styling
+** Use col & colgroup elements
+** Use :nth-child(odd|even) props
+** Etc.
+* Add tests
+* Fix bugs when editing Matrix
+* Create default matrix w/ 2 categories & 2 options each
+* Make clicking on matrix labels change label to editable field
+* Save cell values
+* Allow categories & options to be reordered
+* Automatically sort options per category
+* Confirm deleting matrix/category deletes related options
+* Confirm setup of seeds.db; don't hardcode matrix_id's & category_id's?

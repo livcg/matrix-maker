@@ -48,7 +48,7 @@
 		</tr>
 	<% end %>
 	<% @matrix.categories.reverse.each_with_index do |category, index| %>
-		<% if index == numCategories - 1 %>
+		<% if index == numCategories - 2 %>
 			<% break %>
 		<% else %>
 			<% if !category.nil? && !category.name.nil? %> <%# ick %>
@@ -62,7 +62,7 @@
 							<th rowspan="<%= numOptions %>"><%= category.name %></th>
 						<% end %>
 						<th><%= option.name %></th>
-						<% for i in 1..(numCategories - index - 1) %>
+						<% for i in 1..(numCategories - index - 2) %>
 							<% for j in 1..numOptions %>
 								<% if i.odd? %>
 									<td class="cell oddColumnGroup"></td>
