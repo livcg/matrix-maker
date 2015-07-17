@@ -33,9 +33,9 @@ x. Create seed data
 x. Push to Github
 x. Change from sqlite to postgres - https://devcenter.heroku.com/articles/sqlite3
 x. Include 'rails_12factor' gem
-* Deploy to Heroku
+x. Deploy to Heroku
+x. Fix cell toggling
 * Add description to README
-* Fix cell toggling
 * Add info to index page
 * Fix styling
 ** Use col & colgroup elements
@@ -43,12 +43,14 @@ x. Include 'rails_12factor' gem
 ** Etc.
 * Add tests
 * Fix bugs when editing Matrix
-* Create default matrix w/ 2 categories & 2 options each
-* Make clicking on matrix labels change label to editable field
+* Build simple v2
+** Create default matrix w/ 2 categories & 2 options each
+** Make clicking on matrix labels change label to editable field
 * Save cell values
+* Record moves
 * Allow categories & options to be reordered
 * Automatically sort options per category
 * Confirm deleting matrix/category deletes related options
 * Confirm setup of seeds.db; don't hardcode matrix_id's & category_id's?
 * Make /matrices the root page?
-* Build simple v2
+* Use max/actual # of options/category instead of # of options for 1st category to determine how many cells there are per row
