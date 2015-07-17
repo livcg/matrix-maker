@@ -1,11 +1,16 @@
 <h2>Matrix: <%= @matrix.name %></h2>
 
+<% minNumOptions = 0 %>
+
 <table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
 	<tr><%# Row 1: Categories 2 to N %>
 		<th rowspan="2" colspan="2"></th>
 		<% @matrix.categories.each_with_index do |category, index| %>
 			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
-				<th colspan="<%= category.options.count %>">
+				<% if category.options.count > 0 %>
+					<% minNumOptions = category.options.count %>
+				<% end %>
+				<th colspan="<%= minNumOptions %>">
 					<%= category.name %>
 					<%= link_to '[e]', edit_matrix_category_path(@matrix, category) %>
 				</th>
@@ -15,12 +20,18 @@
 	<tr><%# Row 2: Options for categories 2 to N %>
 		<% @matrix.categories.each_with_index do |category, index| %>
 			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
-				<% category.options.each do |option| %>
-					<th>
-						<%= option.name %><br/>
-						<%= link_to '[e]', 
-							edit_matrix_category_option_path(@matrix, category, option) %>
-					</th>
+				<% if category.options.length == 0 %>
+					<% for index in 1..minNumOptions %>
+						<th></th>
+					<% end %>
+				<% else %>
+					<% category.options.each do |option| %>
+						<th>
+							<%= option.name %><br/>
+							<%= link_to '[e]', 
+								edit_matrix_category_option_path(@matrix, category, option) %>
+						</th>
+					<% end %>
 				<% end %>
 			<% end %>
 		<% end %>
@@ -30,7 +41,7 @@
 	<% numOptions = @matrix.categories.first.options.count %>
 	<% firstCategory = @matrix.categories.first %>
 	<% firstCategory.options.each_with_index do |option, optionIndex| %>
-		<tr class="oddRowGroup"><%# Row 3, etc.: Category 1  & its options %>
+		<tr class="oddRowGroup"><%# Row 3: Category 1 & its 1st option %>
 			<% if optionIndex == 0 %>
 				<th rowspan="<%= numOptions %>">
 					<%= firstCategory.name %><br/>
@@ -57,8 +68,12 @@
 			<% break %>
 		<% else %>
 			<% if !category.nil? && !category.name.nil? %> <%# ick %>
-				<% category.options.each_with_index do |option, optionIndex| %>
-					<%# Rest of the rows: Category N to 3 & their options %>
+				<% options = category.options %>
+				<% if options.length == 0 %>
+					<% options = Array.new(minNumOptions) %>
+				<% end %>
+				<% options.each_with_index do |option, optionIndex| %>
+					<%# Rest of the rows: Category 1's other options & category N to 3 & their options %>
 					<% if index.odd? %>
 						<tr class="oddRowGroup">
 					<% else %>
@@ -67,7 +82,11 @@
 						<% if optionIndex == 0 %>
 							<th rowspan="<%= numOptions %>"><%= category.name %></th>
 						<% end %>
-						<th><%= option.name %></th>
+						<th>
+							<% if !option.nil? %>
+								<%= option.name %>
+							<% end %>
+						</th>
 						<% for i in 1..(numCategories - index - 2) %>
 							<% for j in 1..numOptions %>
 								<% if i.odd? %>

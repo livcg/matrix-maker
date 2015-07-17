@@ -54,3 +54,4 @@ x. Fix cell toggling
 * Confirm setup of seeds.db; don't hardcode matrix_id's & category_id's?
 * Make /matrices the root page?
 * Use max/actual # of options/category instead of # of options for 1st category to determine how many cells there are per row
+* Remove unused columns in DB
