@@ -101,8 +101,8 @@
 				<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 					<% numCells = columnCategory.options.count == 0 ? minNumOptions : columnCategory.options.count %>
 					<% for i in 1..numCells %>
-						<td class="<%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
-							<%= columnCategory.name %>
+						<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
+							&nbsp;
 						</td>
 					<% end %>
 				<% end %>
@@ -116,8 +116,8 @@
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 							<% numCells = columnCategory.options.count == 0 ? minNumOptions : columnCategory.options.count %>
 							<% for i in 1..numCells %>
-								<td class="<%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
-									<%= columnCategory.name %>
+								<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
+									&nbsp;
 								</td>
 							<% end %>
 						<% end %>						
@@ -130,8 +130,8 @@
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 							<% numCells = columnCategory.options.count == 0 ? minNumOptions : columnCategory.options.count %>
 							<% for i in 1..numCells %>
-								<td  class="<%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
-									<%= columnCategory.name %>
+								<td  class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
+									&nbsp;
 								</td>
 							<% end %>
 						<% end %>						
