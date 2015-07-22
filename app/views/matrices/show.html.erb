@@ -4,22 +4,26 @@
 
 <table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
 	<tr><%# Row 1: Categories 2 to N %>
-		<th rowspan="2" colspan="2"></th>
-		<% @matrix.categories.each_with_index do |category, index| %>
-			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
-				<% if category.options.count > 0 %>
-					<% minNumOptions = category.options.count %>
+		<th rowspan="2" colspan="2"></th><%# Row 1, Col 1: Blank cell %>
+		<% if @matrix.categories.count == 0 %>
+			<th>Add category</th>
+		<% else %>
+			<% @matrix.categories.each_with_index do |category, index| %>
+				<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
+					<% if category.options.count > 0 %>
+						<% minNumOptions = category.options.count %>
+					<% end %>
+					<th colspan="<%= minNumOptions %>"><%# Row 1, Col 2 on: Categories %>
+						<%= category.name %>
+						<%= link_to '[e]', edit_matrix_category_path(@matrix, category) %>
+					</th>
 				<% end %>
-				<th colspan="<%= minNumOptions %>">
-					<%= category.name %>
-					<%= link_to '[e]', edit_matrix_category_path(@matrix, category) %>
-				</th>
 			<% end %>
 		<% end %>
 	</tr>
-	<tr><%# Row 2: Options for categories 2 to N %>
+	<tr><%# Row 2: Options for categories 2..N %>
 		<% @matrix.categories.each_with_index do |category, index| %>
-			<% if (index != 0) && !category.nil? && !category.name.nil? %> <%# ick %>
+			<% if !category.nil? && !category.name.nil? %> <%# ick %>
 				<% if category.options.length == 0 %>
 					<% for index in 1..minNumOptions %>
 						<th></th>
@@ -37,31 +41,35 @@
 		<% end %>
 	</tr>
 
-	<% numCategories = @matrix.categories.count %> <%# ick %>	
-	<% numOptions = @matrix.categories.first.options.count %>
-	<% firstCategory = @matrix.categories.first %>
-	<% firstCategory.options.each_with_index do |option, optionIndex| %>
-		<tr class="oddRowGroup"><%# Row 3: Category 1 & its 1st option %>
-			<% if optionIndex == 0 %>
-				<th rowspan="<%= numOptions %>">
-					<%= firstCategory.name %><br/>
-					<%= link_to '[e]', edit_matrix_category_path(@matrix, firstCategory) %>
+	<% numCategories = @matrix.categories.count %>
+	<% if numCategories == 0 %>
+		<tr><th>Add category</th></tr><%# Row 3: Add category %>
+	<% else %>
+		<% firstCategory = @matrix.categories.first %>
+		<% numOptions = firstCategory.options.count %><%#*** ick %>
+		<% firstCategory.options.each_with_index do |option, optionIndex| %>
+			<tr class="oddRowGroup"><%# Row 3 on: Category 1 & its 1st option %>
+				<% if optionIndex == 0 %>
+					<th rowspan="<%= numOptions %>"><%# Row 3, Col 1: Category 1 %>
+						<%= firstCategory.name %><br/>
+						<%= link_to '[e]', edit_matrix_category_path(@matrix, firstCategory) %>
+					</th>
+				<% end %>
+				<th><%# Row 3 on, Col 2: Categor 1 options  %>
+					<%= option.name %>
+					<%= link_to '[e]', edit_matrix_category_option_path(@matrix, firstCategory, option) %>
 				</th>
-			<% end %>
-			<th>
-				<%= option.name %>
-				<%= link_to '[e]', edit_matrix_category_option_path(@matrix, firstCategory, option) %>
-			</th>
-			<% for index in 1..(numCategories - 1) %>
-				<% for optionIndex in 1..numOptions %>
-					<% if index.odd? %>
-						<td class="cell oddColumnGroup"></td>
-					<% else %>
-						<td class="cell evenColumnGroup"></td>
+				<% for index in 1..(numCategories - 1) %>
+					<% for optionIndex in 1..numOptions %>
+						<% if index.odd? %>
+							<td class="cell oddColumnGroup"></td>
+						<% else %>
+							<td class="cell evenColumnGroup"></td>
+						<% end %>
 					<% end %>
 				<% end %>
-			<% end %>
-		</tr>
+			</tr>
+		<% end %>
 	<% end %>
 	<% @matrix.categories.reverse.each_with_index do |category, index| %>
 		<% if index == numCategories - 2 %>
