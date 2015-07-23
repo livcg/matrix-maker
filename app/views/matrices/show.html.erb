@@ -70,18 +70,12 @@
 		<%# Row 2: Options for categories 2..N %>
 		<tr>
 			<% categories.drop(1).each do |category| %>
-				<% if category.options.count == 0 %>
-					<% for i in 1..minNumOptions %>
+				<% category.options.each do |option| %>
+					<th><%= option.name %></th>
+				<% end %>
+				<% if category.options.count < minNumOptions %>
+					<% for i in (category.options.count + 1)..minNumOptions %>
 						<th>&nbsp;</th>
-					<% end %>
-				<% else %>
-					<% category.options.each do |option| %>
-						<th><%= option.name %></th>
-					<% end %>
-					<% if category.options.count < minNumOptions %>
-						<% for i in (category.options.count + 1)..minNumOptions %>
-							<th>&nbsp;</th>
-						<% end %>
 					<% end %>
 				<% end %>
 			<% end %>
