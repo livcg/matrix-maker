@@ -1,5 +1,7 @@
 <h2>Category: <%= @category.name %></h2>
 
+[ <%= link_to 'Edit name', edit_matrix_category_path(@category.matrix, @category) %> ]
+
 <hr/>
 
 <h2>Options</h2>
@@ -21,8 +23,7 @@
 
 <hr/>
 
-<%= link_to 'Edit Category', edit_matrix_category_path(@category.matrix, @category) %> |
-<% link_text = "Show Matrix " + @matrix.name %>
+<% link_text = "Show matrix " + @matrix.name %>
 <%= link_to link_text, matrix_path(@matrix) %>
 
 
