@@ -12,66 +12,34 @@
 	<% if numCategories == 0 %> 
 		<tr>
 			<th>&nbsp;</th>
-			<th>...</th>
+			<th>&nbsp;</th>
 		</tr>
 		<tr>
 			<th><a href="">Add 1st category</a></th>
 		</tr>
 
-	<%# Only 1 category %>	
-	<% elsif numCategories == 1 %> 
-		<tr><%# Row 1: Add category %>
-			<th colspan="2" rowspan="2">&nbsp;</th>
-			<th colspan="<%= minNumOptions %>"><a href="">Add 2nd category</a></th>
-		</tr>		
-		<tr><%# Row 2: Empty options %>
-			<% for i in 1..minNumOptions %>
-				<th>&nbsp;</th>
-			<% end %>
-		</tr>
-		<% firstCategory = @matrix.categories.first %>
-		<tr><%# Row 3 %>			
-			<%
-				options = firstCategory.options.sort_by { |o| o.created_at }
-				categorySpan = options.count < 2 ? minNumOptions : options.count
-			%>
-			<th rowspan="<%= categorySpan %>"><%= firstCategory.name %><a href="">[e]</a></th>
-			<% if options.count == 0 %>
-				<th><a href="">Add option</a></th>
-			<% else %>
-				<th><%= options.first.name %></th>
-			<% end %>
-		</tr>
-		<% if options.count == 0 %>
-			<% for i in 2..minNumOptions %>
-				<tr class="oddRowGroup">
-					<th>&nbsp;</th>
-				</tr>
-			<% end %>
-		<% else %>
-			<%# Row 4 on %>	
-			<% for optionIndex in 1..(options.count - 1) %>
-				<tr class="oddRowGroup">
-					<th><%= firstCategory.options[optionIndex].name %></th>
-				</tr>
-			<% end %>
-		<% end %>
-
-	<%# >1 category %>
-	<% elsif numCategories > 1 %> 
+	<% else %>
 		<% categories = @matrix.categories %>
 
-		<tr><%# Row 1: Category 2..N %>
+		<%# Row 1: Category 2..N %>
+		<tr>
+
+			<%# Blank top left corner %>
 			<th colspan="2" rowspan="2">&nbsp;</th>
+			
+			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
 				<th colspan="<%= category.options.count < minNumOptions ? minNumOptions : category.options.count %>">
 					<%= category.name %> <a href="">[e]</a>
 				</th>
 			<% end %>
-			<th rowspan="2"><a href="">Add category</a></th>			
+
+			<%# "Add category" %>
+			<th rowspan="2"><%#*** add colspan? %><a href="">Add category</a></th>			
 		</tr>
 		
-		<tr><%# Row 2: Options for categories 2..N %>
+		<%# Row 2: Options for categories 2..N %>
+		<tr>
 			<% categories.drop(1).each do |category| %>
 				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
 					<th><%= option.name %></th>
@@ -92,7 +60,7 @@
 				categorySpan = options.count < 2 ? minNumOptions : options.count
 			%>
 
-			<%# Category name & first option %>
+			<%# Category name, first option, & cells %>
 			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 				<th rowspan="<%= categorySpan %>"><%= category.name %> <a href="">[e]</a></th>
 				<% if options.count == 0 %>
@@ -101,8 +69,7 @@
 					<th><%= options.first.name %></th>
 				<% end %>
 				<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
-					<% numCells = columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count %>
-					<% for i in 1..numCells %>
+					<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
 						<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
 							&nbsp;
 						</td>
@@ -110,28 +77,28 @@
 				<% end %>
 			</tr>
 
-			<%# Rest of the options %>
+			<%# Rest of the options & cells %>
 			<% if options.count < 2 %><%#*** ? %>
 				<% for i in 1..(minNumOptions - 1) %>
+					<%#*** Move below into a fragment %>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 						<th>&nbsp;</th>
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
-							<% numCells = columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count %>
-							<% for i in 1..numCells %>
+							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
 								<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
 									&nbsp;
 								</td>
 							<% end %>
 						<% end %>						
 					</tr>
+					<%#*** Move above into a fragment %>
 				<% end %>
 			<% else %>
 				<% options.drop(1).each do |option| %>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 						<th><%= option.name %></th>
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
-							<% numCells = columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count %>
-							<% for i in 1..numCells %>
+							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
 								<td  class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
 									&nbsp;
 								</td>
