@@ -1,6 +1,7 @@
 class CategoriesController < ApplicationController
 
 	def show
+		//*** Mv below to private method
 		@matrix = Matrix.find(params[:matrix_id])
 		@category = @matrix.categories.find(params[:id])
 	end

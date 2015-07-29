@@ -29,7 +29,7 @@ class MatricesController < ApplicationController
 	def update
 		@matrix = Matrix.find(params[:id])
 		if @matrix.update(matrix_params)
-			redirect_to @matrix
+			render 'show'
 		else
 			render 'edit'
 		end

@@ -1,5 +1,7 @@
 <h1>Edit Matrix</h1>
 
-<%= render 'form' %>
+<%= form_for :matrix, url: matrix_path(@matrix), method: :patch do |f| %>
+	<%= render 'form' %>
+<% end %>
 
 <%= link_to 'Back', matrices_path %>

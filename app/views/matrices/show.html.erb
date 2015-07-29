@@ -1,4 +1,4 @@
-<h2>Matrix: <%= @matrix.name %></h2>
+<h2>Matrix: <%= @matrix.name %></h2>[ <%= link_to 'Edit name', edit_matrix_path(@matrix) %> ]</p>
 
 <% 
 	minNumOptions = 2 
@@ -46,8 +46,9 @@
 				</tr>
 			<% end %>
 		<% else %>
+			<%# Row 4 on %>	
 			<% for optionIndex in 1..(options.count - 1) %>
-				<tr class="oddRowGroup"><%# Row 4 on %>	
+				<tr class="oddRowGroup">
 					<th><%= firstCategory.options[optionIndex].name %></th>
 				</tr>
 			<% end %>
@@ -66,9 +67,8 @@
 			<% end %>
 			<th rowspan="2"><a href="">Add category</a></th>			
 		</tr>
-
-		<%# Row 2: Options for categories 2..N %>
-		<tr>
+		
+		<tr><%# Row 2: Options for categories 2..N %>
 			<% categories.drop(1).each do |category| %>
 				<% category.options.each do |option| %>
 					<th><%= option.name %></th>
@@ -108,7 +108,7 @@
 			</tr>
 
 			<%# Rest of the options %>
-			<% if options.count < 2 %>
+			<% if options.count < 2 %><%#*** ? %>
 				<% for i in 1..(minNumOptions - 1) %>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 						<th>&nbsp;</th>
@@ -157,5 +157,4 @@
 
 <hr/>
 
-<%= link_to 'Edit Matrix', edit_matrix_path(@matrix) %> |
-<%= link_to 'Back', matrices_path %>
+<%= link_to 'All matrices', matrices_path %>
