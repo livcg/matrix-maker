@@ -1,7 +1,7 @@
 <h2>Matrix: <%= @matrix.name %></h2>[ <%= link_to 'Edit name', edit_matrix_path(@matrix) %> ]</p>
 
 <% 
-	minNumOptions = 2 
+	minNumOptions = 2 # Should be >= 2
 	numCategories = @matrix.categories.count
 %>
 
@@ -31,15 +31,18 @@
 		</tr>
 		<% firstCategory = @matrix.categories.first %>
 		<tr><%# Row 3 %>			
-			<th rowspan="<%= minNumOptions%>"><%= firstCategory.name %><a href="">[e]</a></th>
-			<% if firstCategory.options.count == 0 %>
+			<%
+				options = firstCategory.options.sort_by { |o| o.created_at }
+				categorySpan = options.count < 2 ? minNumOptions : options.count
+			%>
+			<th rowspan="<%= categorySpan %>"><%= firstCategory.name %><a href="">[e]</a></th>
+			<% if options.count == 0 %>
 				<th><a href="">Add option</a></th>
 			<% else %>
-				<th><%= firstCategory.options.first.name %></th>
+				<th><%= options.first.name %></th>
 			<% end %>
 		</tr>
-		<% options = firstCategory.options %>
-		<% if options.count== 0 %>
+		<% if options.count == 0 %>
 			<% for i in 2..minNumOptions %>
 				<tr class="oddRowGroup">
 					<th>&nbsp;</th>
@@ -70,7 +73,7 @@
 		
 		<tr><%# Row 2: Options for categories 2..N %>
 			<% categories.drop(1).each do |category| %>
-				<% category.options.each do |option| %>
+				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
 					<th><%= option.name %></th>
 				<% end %>
 				<% if category.options.count < minNumOptions %>
@@ -85,11 +88,11 @@
 		<% 	categoriesForRows = [ @matrix.categories.first ].concat(@matrix.categories.drop(2).reverse) %>
 		<% categoriesForRows.each_with_index do |category, rowGroupIndex| %>
 			<%
-				options = category.options 
+				options = category.options.sort_by { |o| o.created_at }
 				categorySpan = options.count < 2 ? minNumOptions : options.count
 			%>
 
-			<%# Category name & 1st option %>
+			<%# Category name & first option %>
 			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 				<th rowspan="<%= categorySpan %>"><%= category.name %> <a href="">[e]</a></th>
 				<% if options.count == 0 %>
