@@ -37,7 +37,7 @@ x. Deploy to Heroku
 x. Fix cell toggling
 * Add description to README
 * Add info to index page
-* Fix styling
+* Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
 ** Use :nth-child(odd|even) props
 ** Etc.
