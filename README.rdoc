@@ -42,8 +42,8 @@ x. Fix cell toggling
 ** Use :nth-child(odd|even) props
 ** Etc.
 * Add tests
-* Fix bugs when editing Matrix - Creates new matrix instead of saves?
-* Add ordering to categories; use created date for now?
+x. Fix bugs when editing Matrix - Creates new matrix instead of saves?
+x. Add ordering to categories; use created date for now?
 * Build simple v2
 ** Create default matrix w/ 2 categories & 2 options each
 ** Make clicking on matrix labels change label to editable field

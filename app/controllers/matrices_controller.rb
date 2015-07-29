@@ -1,7 +1,7 @@
 class MatricesController < ApplicationController
 
 	def index
-		@matrices = Matrix.all
+		@matrices = Matrix.all.sort_by { |m| m.created_at }
 	end
 
 	def show
