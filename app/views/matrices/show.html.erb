@@ -15,7 +15,7 @@
 			<th>&nbsp;</th>
 		</tr>
 		<tr>
-			<th><a href="">Add 1st category</a></th>
+			<th>Add 1st category below ...<%# <a href="">Add 1st category</a> %></th>
 		</tr>
 
 	<% else %>
@@ -30,12 +30,12 @@
 			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
 				<th colspan="<%= category.options.count < minNumOptions ? minNumOptions : category.options.count %>">
-					<%= category.name %> <a href="">[e]</a>
+					<%= category.name %> <%# <a href="">[e]</a> %>
 				</th>
 			<% end %>
 
 			<%# "Add category" %>
-			<th rowspan="2"><%#*** add colspan? %><a href="">Add category</a></th>			
+			<%# <th rowspan="2"><a href="">Add category</a></th> %><%#*** add colspan? %>
 		</tr>
 		
 		<%# Row 2: Options for categories 2..N %>
@@ -62,7 +62,7 @@
 
 			<%# Category name, first option, & cells %>
 			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
-				<th rowspan="<%= categorySpan %>"><%= category.name %> <a href="">[e]</a></th>
+				<th rowspan="<%= categorySpan %>"><%= category.name %> <%# <a href="">[e]</a> %></th>
 				<% if options.count == 0 %>
 					<th>&nbsp;</th>
 				<% else %>
@@ -111,20 +111,22 @@
 	<% end %>
 </table>
 
-<br/>
-
+<br/><br/><br/>
 <hr/>
 
-<h2>Categories</h2>
+
+<h2>Categories &amp; Options</h2>
 <%= render @matrix.categories %>
 
-<br/>
-
+<br/><br/>
 <hr/>
+
 
 <h2>Add a category</h2>
 <%= render 'categories/form' %>
 
+<br/><br/>
 <hr/>
+
 
 [ <%= link_to 'All matrices', matrices_path %> ]

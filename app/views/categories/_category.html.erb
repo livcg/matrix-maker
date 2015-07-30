@@ -1,7 +1,12 @@
-<%= category.name %><!--*** - Option: <%= category.option %> -->
-	<%= link_to '[show]', matrix_category_path(category.matrix, category) %>
-	<%= link_to '[edit]', edit_matrix_category_path(category.matrix, category) %>
-	<%= link_to '[delete]', [category.matrix, category],
-				method: :delete,
-				data: { confirm: 'Are you sure?' } %>
+<%= category.name %>
+<% if category.options.count > 0 %>
+	: <%= category.options.sort_by { |o| o.created_at }.collect { |option| option.name }.join(", ") %>
+<% end %>
 <br/>
+<%= link_to '[ edit category name ]', edit_matrix_category_path(category.matrix, category) %>
+<%= link_to '[ edit options ]', matrix_category_path(category.matrix, category) %>
+<%= link_to '[ delete ]', [category.matrix, category],
+			method: :delete,
+			data: { confirm: 'Are you sure?' } %>
+<br/><br/>
+

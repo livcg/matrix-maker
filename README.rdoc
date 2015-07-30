@@ -1,9 +1,6 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+Creates a matrix for solving logic puzzles.
 
 * Ruby version
 
@@ -24,9 +21,6 @@ Things you may want to cover:
 * ...
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
-
 TODO:
 x. Remove last column group in each row after first one
 x. Create seed data
@@ -35,12 +29,26 @@ x. Change from sqlite to postgres - https://devcenter.heroku.com/articles/sqlite
 x. Include 'rails_12factor' gem
 x. Deploy to Heroku
 x. Fix cell toggling
-* Add description to README
-* Add info to index page
+x. Add description to README
+x.  Add info to index page
+x. Remove [e] & Add category links in matrix for now
+x. Fix styling ...
+x.   In show matrix
+x.     Categories section
+x.       [show] => [edit options]
+x.       [edit] => [edit name]
+x.       List options
+* Expand on README
 * Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
 ** Use :nth-child(odd|even) props
+** In show matrix
+     Add a category section
+       Move up?
+x.      Move button next to text box
+       Change button text to "Add"
 ** Etc.
+* Write methods/helpers for sorting matrices, categories, and options
 * Add tests
 * Remove dupe code in views/matrices/show.html.erb
 x. Fix bugs when editing Matrix - Creates new matrix instead of saves?

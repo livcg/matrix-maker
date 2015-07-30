@@ -9,10 +9,8 @@
   <% @matrices.each do |matrix| %>
     <tr>
       <td><%= matrix.name %></td>
-      <!--*** <td><%= matrix.category %></td> -->
-      <td><%= link_to 'Show', matrix_path(matrix) %></td>
-      <td><%= link_to 'Edit Name', edit_matrix_path(matrix) %></td>
-      <td><%= link_to 'Delete', matrix_path(matrix),
+      <td><%= link_to '[ show ] ', matrix_path(matrix) %></td>
+      <td><%= link_to '[ delete ]', matrix_path(matrix),
               method: :delete,
               data: { confirm: 'Are you sure?' } %></td>
     </tr>

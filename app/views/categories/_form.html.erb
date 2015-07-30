@@ -1,9 +1,5 @@
 <%= form_for([@matrix, @matrix.categories.build]) do |f| %>
   <p>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.submit %>
+    <%= f.label :name %> <%= f.text_field :name %> <%= f.submit %>
   </p>
 <% end %>
