@@ -1,4 +1,8 @@
-<h2>Matrix: <%= @matrix.name %></h2> <%= link_to '[ edit name ]', edit_matrix_path(@matrix) %></p>
+<h2>Matrix: <%= @matrix.name %></h2>
+
+<p><%= link_to '[ edit matrix name ]', edit_matrix_path(@matrix) %></p>
+
+<p>Click on a cell to toggle between the following symbols: "X", "O", "X?", "O?", " "
 
 <% 
 	minNumOptions = 2 # Should be >= 2

@@ -70,3 +70,4 @@ x. Add ordering to categories; use created date for now?
 * Make /matrices the root page?
 * Use max/actual # of options/category instead of # of options for 1st category to determine how many cells there are per row
 * Remove unused columns in DB
+* Don't allow cells that don't have corresponding option names to be clicked on?
