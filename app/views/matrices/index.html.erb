@@ -1,10 +1,12 @@
-<h1>Listing Matrices</h1>
+<h1>All Matrices</h1>
  
 <table>
+  <%#
   <tr>
     <th>Name</th>
     <th colspan="3"></th>
   </tr>
+  %>
  
   <% @matrices.each do |matrix| %>
     <tr>
@@ -17,6 +19,7 @@
   <% end %>
 </table>
 
-<hr>
+<br/><br/>
+<hr/>
 
-[ <%= link_to 'New matrix', new_matrix_path %> ]
+<%= link_to '[ New matrix ]', new_matrix_path %>
