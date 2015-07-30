@@ -30,11 +30,15 @@ $(document).ready(function() {
     var symbols = [ 'X', 'O', 'X?', 'O?', '' ]
     $("td.cell").unbind('click').click( function() {
  		current = $(this).text();
-		for (i = 0; i < symbols.length; i++) {
+ 		i = 0
+		for (; i < symbols.length; i++) {
 			    if (current == symbols[i]) {
 					$(this).html(symbols[(i+1) % symbols.length]);
 				break;
 		    }
+		}
+		if (i == symbols.length) {
+			$(this).html(symbols[0]);
 		}
 		return false;
    });
