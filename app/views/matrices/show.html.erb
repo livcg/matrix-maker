@@ -7,6 +7,8 @@
 <% 
 	minNumOptions = 2 # Should be >= 2
 	numCategories = @matrix.categories.count
+	cellRow = -1
+	cellColumn = -1
 %>
 
 <table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
@@ -62,19 +64,21 @@
 			<%
 				options = category.options.sort_by { |o| o.created_at }
 				categorySpan = options.count < 2 ? minNumOptions : options.count
+				cellRow += 1
 			%>
 
-			<%# Category name, first option, & cells %>
+			<%# Category name, first option, & cells %>			
 			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
-				<th rowspan="<%= categorySpan %>"><%= category.name %> <%# <a href="">[e]</a> %></th>
+				<th class="vertical" rowspan="<%= categorySpan %>"><%= category.name %> <%# <a href="">[e]</a> %></th>
 				<% if options.count == 0 %>
 					<th>&nbsp;</th>
 				<% else %>
-					<th><%= options.first.name %></th>
+					<th class="vertical"><%= options.first.name %></th>
 				<% end %>
 				<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 					<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
-						<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
+						<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
+							id="r<%= cellRow %>c<%= cellColumn += 1 %>">
 							&nbsp;
 						</td>
 					<% end %>
@@ -84,12 +88,17 @@
 			<%# Rest of the options & cells %>
 			<% if options.count < 2 %><%#*** ? %>
 				<% for i in 1..(minNumOptions - 1) %>
+					<%
+						cellRow += 1
+						cellColumn = -1
+					%>
 					<%#*** Move below into a fragment %>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 						<th>&nbsp;</th>
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
-								<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
+								<td class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
+									id="r<%= cellRow %>c<%= cellColumn += 1 %>">
 									&nbsp;
 								</td>
 							<% end %>
@@ -99,11 +108,16 @@
 				<% end %>
 			<% else %>
 				<% options.drop(1).each do |option| %>
+					<%
+						cellRow += 1
+						cellColumn = -1
+					%>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
-						<th><%= option.name %></th>
+						<th class="vertical"><%= option.name %></th>
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
-								<td  class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>">
+								<td  class="cell <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
+									id="r<%= cellRow %>c<%= cellColumn += 1 %>">
 									&nbsp;
 								</td>
 							<% end %>

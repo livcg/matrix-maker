@@ -38,6 +38,9 @@ x.     Categories section
 x.       [show] => [edit options]
 x.       [edit] => [edit name]
 x.       List options
+x. Fix bugs when editing Matrix - Creates new matrix instead of saves?
+x. Add ordering to categories; use created date for now?
+x. Add ID's to cells
 * Expand on README
 * Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
@@ -48,6 +51,7 @@ x.   Change Back link to "[ back ]"
 x.   Move to 1 line
 ** In show matrix
 x.   Change "Edit name" link to "[ edit name ]"
+x.   Change option names in rows 3 on to align left
      Add a category section
        Move up?
 x.      Move button next to text box
@@ -56,13 +60,11 @@ x.      Move button next to text box
 * Write methods/helpers for sorting matrices, categories, and options
 * Add tests
 * Remove dupe code in views/matrices/show.html.erb
-x. Fix bugs when editing Matrix - Creates new matrix instead of saves?
-x. Add ordering to categories; use created date for now?
 * Build simple v2
 ** Create default matrix w/ 2 categories & 2 options each
 ** Make clicking on matrix labels change label to editable field
-* Save cell values
-* Record moves
+* Save cell values / record moves
+** Change ID's to start with "r1c1"? 
 * Allow categories & options to be reordered
 * Automatically sort options per category
 * Confirm deleting matrix/category deletes related options

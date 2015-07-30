@@ -16,6 +16,10 @@ table.matrix th {
 	background-color: lightblue;
 }
 
+table.matrix th.vertical {
+	text-align: left;
+}
+
 table.matrix td.cell {
 	width: 25px;
 	text-align: center;
