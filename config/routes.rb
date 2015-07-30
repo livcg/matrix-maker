@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :categories do
       resources :options
     end
+    resources :moves
   end
 
   # You can have the root of your site routed with "root"

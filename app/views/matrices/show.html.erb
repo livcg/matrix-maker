@@ -133,6 +133,34 @@
 <hr/>
 
 
+<h2>Moves</h2>
+
+<p>As of page load</p>
+
+<p>
+	<% @matrix.moves.sort_by { |m| m.created_at }.each do |move| %>
+	    [ <%= move.cell %> : <%= move.symbol %> ]
+	<% end %>
+</p>	
+
+<br/><br/>
+<hr/>
+
+<% if false %>
+<h2>Add a move</h2>
+
+<%= form_for([@matrix, @matrix.moves.build]) do |f| %>
+  <p>
+    <%= f.label :cell %> <%= f.text_field :cell %>
+    <%= f.label :symbol %> <%= f.text_field :symbol %>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<br/><br/><br/>
+<hr/>
+<% end %>
+
 <h2>Categories &amp; Options</h2>
 <%= render @matrix.categories %>
 

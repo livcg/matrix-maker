@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150714040612) do
+ActiveRecord::Schema.define(version: 20150730052649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,6 +33,16 @@ ActiveRecord::Schema.define(version: 20150714040612) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "moves", force: :cascade do |t|
+    t.string   "cell"
+    t.integer  "matrix_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "symbol"
+  end
+
+  add_index "moves", ["matrix_id"], name: "index_moves_on_matrix_id", using: :btree
+
   create_table "options", force: :cascade do |t|
     t.string   "name"
     t.integer  "category_id"
@@ -43,5 +53,6 @@ ActiveRecord::Schema.define(version: 20150714040612) do
   add_index "options", ["category_id"], name: "index_options_on_category_id", using: :btree
 
   add_foreign_key "categories", "matrices"
+  add_foreign_key "moves", "matrices"
   add_foreign_key "options", "categories"
 end
