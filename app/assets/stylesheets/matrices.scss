@@ -12,7 +12,13 @@ tr.evenRowGroup td.evenColumnGroup {
     background-color: lightgray;
 }
 
+table.matrix th {
+	background-color: lightblue;
+}
+
 table.matrix td.cell {
+	width: 25px;
 	text-align: center;
 }
+
 
