@@ -58,8 +58,12 @@ x.   Move to 1 line
 x.   Change "Edit name" link to "[ edit name ]"
 x.   Change option names in rows 3 on to align left
 x.   When updating move listing, add <br/>
+x.   Add row & column #'s
 ===>>> I'm here
-     Add row & column #'s
+     When move is made, update view, then post to server
+     Add button to clear board
+     When hovering over a cell, highlight its row & column
+     Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
      Change colour of th's for options (e.g. lightseagreen); add class="option"?
      Display moves in table format?
      Add a category section
@@ -81,3 +85,4 @@ x.     Move button next to text box
 * Remove unused columns in DB
 * Don't allow cells that don't have corresponding option names to be clicked on?
 * Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
+* Add a way to mark off a block of moves, e.g. "initial pass"

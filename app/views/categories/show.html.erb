@@ -5,7 +5,7 @@
 <hr/>
 
 <h2>Options</h2>
-<%= render @category.options %>
+<%= render @category.options.sort_by { |o| o.created_at } %>
 <br/>
 
 <hr/>
