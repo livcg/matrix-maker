@@ -57,12 +57,14 @@ x.   Move to 1 line
 ** In show matrix
 x.   Change "Edit name" link to "[ edit name ]"
 x.   Change option names in rows 3 on to align left
-     Change colour of th's for options (e.g. lightseagreen); add class="option"?
+x.   When updating move listing, add <br/>
 ===>>> I'm here
      Add row & column #'s
+     Change colour of th's for options (e.g. lightseagreen); add class="option"?
+     Display moves in table format?
      Add a category section
-       Move up?
-x.      Move button next to text box
+x.     Move button next to text box
+       Move section up?
        Change button text to "Add"
 ** Etc.
 * Write methods/helpers for sorting matrices, categories, and options

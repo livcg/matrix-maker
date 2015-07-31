@@ -137,14 +137,16 @@
 
 <p>Key: [ &lt;CELL_ID&gt; : &lt;SYMBOL&gt; ]</p>
 
-<p id="moves">
+<div id="moves">
+	<div>
 	<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
-	    [ <%= move.cell %> : <%= move.symbol %> ]
+	    <span>[ <%= move.cell %> : <%= move.symbol %> ]</span>
 	    <% if ((index + 1) % 10) == 0 %>
-	    	<br/>
+	    	</div><div>
     	<% end %>
 	<% end %>
-</p>	
+	</div>
+</div>	
 
 <br/><br/>
 <hr/>
