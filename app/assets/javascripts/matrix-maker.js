@@ -69,8 +69,7 @@ $(document).ready(function() {
 		// Update symbol in matrix
 		tdElement.html(newSymbol)
 		$.post( addMoveUrl,
-				{ move: { cell: cellId, symbol: newSymbol }},
-				}
+				{ move: { cell: cellId, symbol: newSymbol }}
 		).fail(function() {
 			alert("Warning: Failed to store your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
