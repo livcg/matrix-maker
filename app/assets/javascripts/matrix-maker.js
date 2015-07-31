@@ -58,6 +58,7 @@ $(document).ready(function() {
 				break
 		    }
 		}
+		tdElement = $(this)
 		cellId = $(this).attr("id")
 		newSymbol = symbols[newSymbolIndex]
 		$.post( addMoveUrl,
@@ -65,8 +66,8 @@ $(document).ready(function() {
 		).done(function() { 
 			//*** Update move list in view
 			$("p#moves").append(" [ " + cellId + " : " + newSymbol + " ]")
+			tdElement.html(newSymbol)
 		})
-		$(this).html(newSymbol)
 		return false
    })
 })
