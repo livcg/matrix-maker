@@ -29,17 +29,17 @@
 
 		<%# Row 0: Column #'s' for cells %>
 		<tr>
-			<%# Blank top left corner %>
-			<th colspan="2" rowspan="3">&nbsp;</th>
+			<th></th>
+			<th colspan="2">&nbsp;</th>
 
-			<% count = 0 %>
+			<% cCount = 0 %>
 			<% categories.drop(1).each do |category| %>
 				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
-					<th>c<%= count += 1 %></th>
+					<th>c<%= cCount += 1 %></th>
 				<% end %>
 				<% if category.options.count < minNumOptions %>
 					<% for i in (category.options.count + 1)..minNumOptions %>
-						<th>c<%= count += 1 %></th>
+						<th>c<%= cCount += 1 %></th>
 					<% end %>
 				<% end %>
 			<% end %>			
@@ -47,6 +47,9 @@
 
 		<%# Row 1: Category 2..N %>
 		<tr>			
+			<th rowspan="2"></th>
+			<th colspan="2" rowspan="2">&nbsp;</th>
+
 			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
 				<th colspan="<%= category.options.count < minNumOptions ? minNumOptions : category.options.count %>">
@@ -73,7 +76,10 @@
 		</tr>
 
 		<%# Row 3 on: Category 1 & it's options then Category N-1, etc. %>
-		<% 	categoriesForRows = [ @matrix.categories.first ].concat(@matrix.categories.drop(2).reverse) %>
+		<% 	
+			categoriesForRows = [ @matrix.categories.first ].concat(@matrix.categories.drop(2).reverse)
+			rCount = 0
+		%>
 		<% categoriesForRows.each_with_index do |category, rowGroupIndex| %>
 			<%
 				options = category.options.sort_by { |o| o.created_at }
@@ -83,6 +89,7 @@
 
 			<%# Category name, first option, & cells %>			
 			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
+				<th>r<%= rCount += 1 %></th>
 				<th class="vertical" rowspan="<%= categorySpan %>"><%= category.name %> <%# <a href="">[e]</a> %></th>
 				<% if options.count == 0 %>
 					<th>&nbsp;</th>
@@ -108,6 +115,7 @@
 					%>
 					<%#*** Move below into a fragment %>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
+						<th>r<%= rCount += 1 %></th>
 						<th>&nbsp;</th>
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
@@ -127,6 +135,7 @@
 						cellColumn = 0
 					%>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
+						<th>r<%= rCount += 1 %></th>
 						<th class="vertical"><%= option.name %></th>
 						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
