@@ -27,12 +27,26 @@
 	<% else %>
 		<% categories = @matrix.categories %>
 
-		<%# Row 1: Category 2..N %>
+		<%# Row 0: Column #'s' for cells %>
 		<tr>
-
 			<%# Blank top left corner %>
-			<th colspan="2" rowspan="2">&nbsp;</th>
-			
+			<th colspan="2" rowspan="3">&nbsp;</th>
+
+			<% count = 0 %>
+			<% categories.drop(1).each do |category| %>
+				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
+					<th>c<%= count += 1 %></th>
+				<% end %>
+				<% if category.options.count < minNumOptions %>
+					<% for i in (category.options.count + 1)..minNumOptions %>
+						<th>c<%= count += 1 %></th>
+					<% end %>
+				<% end %>
+			<% end %>			
+		</tr>
+
+		<%# Row 1: Category 2..N %>
+		<tr>			
 			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
 				<th colspan="<%= category.options.count < minNumOptions ? minNumOptions : category.options.count %>">
