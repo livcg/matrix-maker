@@ -29,8 +29,7 @@
 
 		<%# Row 0: Column #'s' for cells %>
 		<tr>
-			<th></th>
-			<th colspan="2">&nbsp;</th>
+			<th colspan="3" rowspan="3">&nbsp;</th>
 
 			<% cCount = 0 %>
 			<% categories.drop(1).each do |category| %>
@@ -47,9 +46,6 @@
 
 		<%# Row 1: Category 2..N %>
 		<tr>			
-			<th rowspan="2"></th>
-			<th colspan="2" rowspan="2">&nbsp;</th>
-
 			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
 				<th colspan="<%= category.options.count < minNumOptions ? minNumOptions : category.options.count %>">
