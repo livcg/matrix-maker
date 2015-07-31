@@ -58,14 +58,15 @@ $(document).ready(function() {
 				break
 		    }
 		}
+		cellId = $(this).attr("id")
 		newSymbol = symbols[newSymbolIndex]
-		$.ajax({ url: addMoveUrl,
-			   	method: "POST",
-			   	data: { move: { cell: $(this).attr("id"), symbol: newSymbol }}})
-			.done(function() { 
-				//*** Update move list in view
-			})
-			$(this).html(newSymbol)
+		$.post( addMoveUrl,
+				{ move: { cell: cellId, symbol: newSymbol }}
+		).done(function() { 
+			//*** Update move list in view
+			$("p#moves").append(" [ " + cellId + " : " + newSymbol + " ]")
+		})
+		$(this).html(newSymbol)
 		return false
    })
 })

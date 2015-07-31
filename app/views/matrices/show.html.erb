@@ -135,11 +135,14 @@
 
 <h2>Moves</h2>
 
-<p>As of page load</p>
+<p>Key: [ &lt;CELL_ID&gt; : &lt;SYMBOL&gt; ]</p>
 
-<p>
-	<% @matrix.moves.sort_by { |m| m.created_at }.each do |move| %>
+<p id="moves">
+	<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
 	    [ <%= move.cell %> : <%= move.symbol %> ]
+	    <% if ((index + 1) % 10) == 0 %>
+	    	<br/>
+    	<% end %>
 	<% end %>
 </p>	
 

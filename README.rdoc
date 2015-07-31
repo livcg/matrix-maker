@@ -68,7 +68,8 @@ x.      Move button next to text box
 * Save cell values / record moves
 ===>>> I'm here
 ** Change ID's to start with "r1c1"?; remove old entries in moves table
-** On page load, restore moves
+x  On page load, restore moves
+x. When move is made, update view's list of moves
 * Allow categories & options to be reordered
 * Automatically sort options per category
 * Confirm deleting matrix/category deletes related options
