@@ -33,9 +33,7 @@ $(document).ready(function() {
     }
 
     // Replay moves
-    $.getJSON(getMovesUrl, function() {
-    	console.log("success") 
-    }).done( function(data) {
+    $.getJSON(getMovesUrl).done( function(data) {
     	$.each(data, function(i, move) {
 	    	symbol = move[2]
 	    	if (symbol != null) {
@@ -64,7 +62,6 @@ $(document).ready(function() {
 		$.post( addMoveUrl,
 				{ move: { cell: cellId, symbol: newSymbol }}
 		).done(function() { 
-			//*** Update move list in view
 			$("p#moves").append(" [ " + cellId + " : " + newSymbol + " ]")
 			tdElement.html(newSymbol)
 		})

@@ -42,6 +42,10 @@ x. Fix bugs when editing Matrix - Creates new matrix instead of saves?
 x. Add ordering to categories; use created date for now?
 x. Add ID's to cells
 x. Save cell symbol instead of array index?
+x. Save cell values / record moves
+x.  Change ID's to start with "r1c1"?; remove old entries in moves table
+x.  On page load, restore moves
+x.  When move is made, update view's list of moves
 * Expand on README
 * Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
@@ -54,6 +58,8 @@ x.   Move to 1 line
 x.   Change "Edit name" link to "[ edit name ]"
 x.   Change option names in rows 3 on to align left
      Change colour of th's for options (e.g. lightseagreen); add class="option"?
+===>>> I'm here
+     Add row & column #'s
      Add a category section
        Move up?
 x.      Move button next to text box
@@ -65,11 +71,6 @@ x.      Move button next to text box
 * Build simple v2
 ** Create default matrix w/ 2 categories & 2 options each
 ** Make clicking on matrix labels change label to editable field
-* Save cell values / record moves
-===>>> I'm here
-** Change ID's to start with "r1c1"?; remove old entries in moves table
-x  On page load, restore moves
-x. When move is made, update view's list of moves
 * Allow categories & options to be reordered
 * Automatically sort options per category
 * Confirm deleting matrix/category deletes related options

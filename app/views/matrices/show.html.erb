@@ -7,8 +7,8 @@
 <% 
 	minNumOptions = 2 # Should be >= 2
 	numCategories = @matrix.categories.count
-	cellRow = -1
-	cellColumn = -1
+	cellRow = 0
+	cellColumn = 0
 %>
 
 <table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
@@ -90,7 +90,7 @@
 				<% for i in 1..(minNumOptions - 1) %>
 					<%
 						cellRow += 1
-						cellColumn = -1
+						cellColumn = 0
 					%>
 					<%#*** Move below into a fragment %>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
@@ -110,7 +110,7 @@
 				<% options.drop(1).each do |option| %>
 					<%
 						cellRow += 1
-						cellColumn = -1
+						cellColumn = 0
 					%>
 					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 						<th class="vertical"><%= option.name %></th>
