@@ -60,14 +60,16 @@ $(document).ready(function() {
 		cellId = $(this).attr("id")
 		newSymbol = symbols[newSymbolIndex]
 
+		// Update symbol in matrix
+		tdElement.html(newSymbol)
+
 		// Update move list
 		string = " <span>[ " + cellId + " : " + newSymbol + " ]</span> "
 		$("div#moves div:last-child").append(string)
 		if ($("div#moves div:last-child span").length == 10)
 			$("div#moves").append("<div></div>")
 
-		// Update symbol in matrix
-		tdElement.html(newSymbol)
+		// Update server
 		$.post( addMoveUrl,
 				{ move: { cell: cellId, symbol: newSymbol }}
 		).fail(function() {

@@ -59,13 +59,16 @@ x.   Change "Edit name" link to "[ edit name ]"
 x.   Change option names in rows 3 on to align left
 x.   When updating move listing, add <br/>
 x.   Add row & column #'s
+x.   Fix cells' column #'g
+x.   When move is made, update view, then post to server
 ===>>> I'm here
-     When move is made, update view, then post to server
-     Add button to clear board
      When hovering over a cell, highlight its row & column
+     Add button to clear board
      Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
      Change colour of th's for options (e.g. lightseagreen); add class="option"?
      Display moves in table format?
+     Add a way to mark the game as solved
+     Add notes field
      Add a category section
 x.     Move button next to text box
        Move section up?
