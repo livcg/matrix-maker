@@ -9,22 +9,18 @@ $(document).ready(function() {
 	// Add class="hover" to current row's and column's cells
    	var allCells = $("th, td")
    	allCells.mouseenter(function() {
+		id = $(this).attr("id")
+
    		// Handle row
-		$(this).parent().children().map(function() { 
-			$(this).addClass("hover")
-		})
-		// Handle row's category
-		var tr = $(this).parent()
-		if (!tr.hasClass("firstRowForCat")) {
-			tr.prevAll(".firstRowForCat").first().children("th:nth-child(2)").addClass("hover")
-		}
+		pattern = new RegExp("^r\\d+")
+		row = pattern.exec(id)
+		allCells.filter("." + row).addClass("hover")
 
 		// Handle column
-		this.classList.forEach(function(c, index, array) {
-			if (c.search(/^c[0-9]+/) == 0) {
-				$("td." + c + ", th." + c).addClass("hover")
-			}
-		})
+		pattern = new RegExp("c\\d+$")
+		column = pattern.exec(id)
+		allCells.filter("." + column).addClass("hover")
+
    	}).mouseleave(function() {
    		allCells.removeClass("hover")
    	})
