@@ -5,6 +5,26 @@ getMovesUrl = location.href + "/moves"
 addMoveUrl = location.href + "/moves"
 
 $(document).ready(function() {
+
+	// Add class="hover" to current row's and column's cells
+   	var allCells = $("th, td")
+   	allCells.mouseenter(function() {
+   		// Handle row
+		$(this).parent().children().map(function() { 
+			$(this).addClass("hover")
+		})
+		//*** Handle row's category
+
+		// Handle column
+		this.classList.forEach(function(c, index, array) {
+			if (c.search(/^c[0-9]+/) == 0) {
+				$("td." + c).addClass("hover")
+			}
+		})
+   	}).mouseleave(function() {
+   		allCells.removeClass("hover")
+   	})
+
 	//*** Delete?
     for (groupIndex = 2; groupIndex <= 5; groupIndex++) {
 		var val
@@ -75,8 +95,10 @@ $(document).ready(function() {
 		).fail(function() {
 			alert("Warning: Failed to store your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
+
 		return false
    })
+
 })
 
 

@@ -7,8 +7,8 @@ table.matrix {
 	border-collapse: collapse;
 }
 
-tr.oddRowGroup td.oddColumnGroup,
-tr.evenRowGroup td.evenColumnGroup {
+tr.oddRowGroup td.oddColumnGroup:not(.hover),
+tr.evenRowGroup td.evenColumnGroup:not(.hover) {
     background-color: lightgray;
 }
 
@@ -25,4 +25,7 @@ table.matrix td.cell {
 	text-align: center;
 }
 
+table.matrix tr:hover td, tr:hover th, td.hover, th.hover {
+	background-color: yellow;
+}
 

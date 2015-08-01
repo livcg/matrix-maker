@@ -63,6 +63,7 @@ x.   Fix cells' column #'g
 x.   When move is made, update view, then post to server
 ===>>> I'm here
      When hovering over a cell, highlight its row & column
+     When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
      Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
      Change colour of th's for options (e.g. lightseagreen); add class="option"?
