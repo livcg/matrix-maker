@@ -13,7 +13,11 @@ $(document).ready(function() {
 		$(this).parent().children().map(function() { 
 			$(this).addClass("hover")
 		})
-		//*** Handle row's category
+		// Handle row's category
+		var tr = $(this).parent()
+		if (!tr.hasClass("firstRowForCat")) {
+			tr.prevAll(".firstRowForCat").first().children("th:nth-child(2)").addClass("hover")
+		}
 
 		// Handle column
 		this.classList.forEach(function(c, index, array) {

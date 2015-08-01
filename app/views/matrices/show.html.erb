@@ -84,7 +84,7 @@
 			%>
 
 			<%# Category name, first option, & cells %>			
-			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
+			<tr class="firstRowForCat <%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 				<th>r<%= rCount %></th>
 				<th class="vertical" rowspan="<%= categorySpan %>"><%= category.name %> <%# <a href="">[e]</a> %></th>
 				<% if options.count == 0 %>
