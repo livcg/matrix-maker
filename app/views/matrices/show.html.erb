@@ -46,9 +46,14 @@
 
 		<%# Row 1: Category 2..N %>
 		<tr>			
+			<% cCount = 0 %>
 			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
-				<th colspan="<%= category.options.count < minNumOptions ? minNumOptions : category.options.count %>">
+				<% 
+					numCols = category.options.count < minNumOptions ? minNumOptions : category.options.count
+					classes = (1..numCols).map() { |i| "c" + (cCount += 1).to_s }.join(" ")
+				%>
+				<th colspan="<%= numCols %>" class="<%= classes %>">
 					<%= category.name %> <%# <a href="">[e]</a> %>
 				</th>
 			<% end %>
