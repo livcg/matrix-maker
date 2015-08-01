@@ -12,7 +12,7 @@ tr.evenRowGroup td.evenColumnGroup:not(.hover) {
     background-color: lightgray;
 }
 
-table.matrix th {
+table.matrix th:not(.hover) {
 	background-color: lightblue;
 }
 

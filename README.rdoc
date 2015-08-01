@@ -61,8 +61,12 @@ x.   When updating move listing, add <br/>
 x.   Add row & column #'s
 x.   Fix cells' column #'g
 x.   When move is made, update view, then post to server
+x.     When hovering over a cell, highlight its row & column
+     When hovering over a cell, highlight relevant th's
+x.     Row 0 (c#) th's
 ===>>> I'm here
-     When hovering over a cell, highlight its row & column
+       Row 1 (category) th's
+       Col 2 (category) th's
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
      Incorporate Bootstrap - http://getbootstrap.com/examples/theme/

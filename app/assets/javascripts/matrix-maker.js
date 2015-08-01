@@ -18,7 +18,7 @@ $(document).ready(function() {
 		// Handle column
 		this.classList.forEach(function(c, index, array) {
 			if (c.search(/^c[0-9]+/) == 0) {
-				$("td." + c).addClass("hover")
+				$("td." + c + ", th." + c).addClass("hover")
 			}
 		})
    	}).mouseleave(function() {
