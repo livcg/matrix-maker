@@ -64,13 +64,14 @@
 		
 		<%# Row 2: Options for categories 2..N %>
 		<tr>
+			<% cCount = 0 %>
 			<% categories.drop(1).each do |category| %>
 				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
-					<th><%= option.name %></th>
+					<th class="c<%= cCount += 1 %>"><%= option.name %></th>
 				<% end %>
 				<% if category.options.count < minNumOptions %>
 					<% for i in (category.options.count + 1)..minNumOptions %>
-						<th>&nbsp;</th>
+						<th class="c<%= cCount += 1 %>">&nbsp;</th>
 					<% end %>
 				<% end %>
 			<% end %>
