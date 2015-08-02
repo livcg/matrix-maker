@@ -9,48 +9,22 @@ $(document).ready(function() {
 	// Add class="hover" to current row's and column's cells
    	var allCells = $("th, td")
    	allCells.mouseenter(function() {
-		id = $(this).attr("id")
+   		classes = $(this).attr("class")
 
-   		// Handle row
-		pattern = new RegExp("^r\\d+")
-		row = pattern.exec(id)
-		allCells.filter("." + row).addClass("hover")
+	   	// Handle row
+	   	rowPattern = new RegExp("r\\d+")
+	   	rCounts = rowPattern.exec(classes)
+	   	if (rCounts != undefined)
+		   	allCells.filter("." + rCounts[0]).addClass("hover")
 
 		// Handle column
-		pattern = new RegExp("c\\d+$")
-		column = pattern.exec(id)
-		allCells.filter("." + column).addClass("hover")
-
+		columnPattern = new RegExp("c\\d+")
+		cCounts = columnPattern.exec(classes)
+		if (cCounts != undefined)
+			allCells.filter("." + cCounts[0]).addClass("hover")
    	}).mouseleave(function() {
    		allCells.removeClass("hover")
-   	})
-
-	//*** Delete?
-    for (groupIndex = 2; groupIndex <= 5; groupIndex++) {
-		var val
-
-		// Dynamically set column group labels based on row group labels
-
-		val = $("input.label.group" + groupIndex).val()
-		$("td.label.group" + groupIndex).text(val)
-
-		$("input.label.group" + groupIndex).change( function() {
-		    var val = $(this).val()
-		    $("td.label." + this.classList[0]).text(val) // TODO: Check for relevant class
-		})
-
-		// Dynamically set column labels based on row labels
-		
-		for (itemIndex = 1; itemIndex <= 5; itemIndex++) {
-		    val = $("input.label.g" + groupIndex + "i" + itemIndex).val()
-		    $("td.label.g" + groupIndex + "i" + itemIndex).html(val) //*** note text()?
-
-		    $("input.label.g" + groupIndex + "i" + itemIndex).change( function() {
-			var val = $(this).val()
-			$("td.label." + this.classList[0]).html(val) // TODO: Check for relevant class
-		    })
-		}
-    }
+	})
 
     // Replay moves
     $.getJSON(getMovesUrl).done( function(data) {
