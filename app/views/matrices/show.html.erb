@@ -27,9 +27,11 @@
 
 		<%# Row 0: Column #'s' for cells %>
 		<tr>
+			<%# Blank top left corner %>
 			<th colspan="3" rowspan="3">&nbsp;</th>
 
 			<% cCount = 1 %>
+			<%#*** Move below into a fragment %>
 			<% categories.drop(1).each do |category| %>
 				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
 					<th class="c<%= cCount %>">c<%= cCount %></th>
@@ -42,12 +44,12 @@
 					<% end %>
 				<% end %>
 			<% end %>			
+			<%#*** Move above into a fragment %>
 		</tr>
 
 		<%# Row 1: Category 2..N %>
 		<tr>			
 			<% cCount = 0 %>
-			<%# Category name %>
 			<% categories.drop(1).each do |category| %>
 				<% 
 					numCols = category.options.count < minNumOptions ? minNumOptions : category.options.count
@@ -77,7 +79,7 @@
 			<% end %>
 		</tr>
 
-		<%# Row 3 on: Category 1 & it's options then Category N-1, etc. %>
+		<%# Row 3 on: Category 1 & its options, then Category N-1 & its options, etc. %>
 		<% 	
 			categoriesForRows = [ @matrix.categories.first ].concat(@matrix.categories.drop(2).reverse)
 			rCount = 1
@@ -89,11 +91,18 @@
 				cCount = 1
 			%>
 
-			<%# Category name, first option, & cells %>			
+			<%# Category, first option, & cells %>			
 			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
+				<%# r# %>
 				<th class="r<%= rCount %>">r<%= rCount %></th>
+
+				<%# Category %>				
 				<% classes = "vertical " + (0..(categorySpan - 1)).map() { |i| "r" + (rCount + i).to_s }.join(" ") %>
-				<th class="<%= classes %>" rowspan="<%= categorySpan %>"><%= category.name %> <%# <a href="">[e]</a> %></th>
+				<th class="<%= classes %>" rowspan="<%= categorySpan %>"><%= category.name %> 
+					<%# <a href="">[e]</a> %>
+				</th>
+				
+				<%# Option %>
 				<% 
 					text = " " #*** Use &nbsp; ?
 					if options.count > 0 
@@ -101,6 +110,9 @@
 					end
 				%>
 				<th class="vertical r<%= rCount %>"><%= text %></th>
+
+				<%#*** Move below into a fragment %>
+				<%# Playable cells %>
 				<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
 					<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
 						<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
@@ -110,50 +122,39 @@
 						<% cCount += 1 %>
 					<% end %>
 				<% end %>
+				<%#*** Move above into a fragment %>
 			<% rCount += 1 %>
 			</tr>
 
 			<%# Rest of the options & cells %>
-			<% if options.count < 2 %><%#*** ? %>
-				<% for i in 1..(minNumOptions - 1) %>
-					<% cCount = 1 %>
-					<%#*** Move below into a fragment %>
-					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
-						<th class="r<%= rCount %>">r<%= rCount %></th>
-						<th class="r<%= rCount %>">&nbsp;</th>
-						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
-							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
-								<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
-									id="r<%= rCount %>c<%= cCount %>">
-									&nbsp;
-								</td>
-								<% cCount += 1 %>
-							<% end %>
-						<% end %>						
-						<% rCount += 1 %>
-					</tr>
-					<%#*** Move above into a fragment %>
-				<% end %>
-			<% else %>
-				<% options.drop(1).each do |option| %>
-					<%
-						cCount = 1
-					%>
-					<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
-						<th class="r<%= rCount %>">r<%= rCount %></th>
-						<th class="vertical r<%= rCount %>"><%= option.name %></th>
-						<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
-							<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
-								<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
-									id="r<%= rCount %>c<%= cCount %>">
-									&nbsp;
-								</td>
-								<% cCount += 1 %>
-							<% end %>
-						<% end %>	
-						<% rCount += 1 %>			
-					</tr>
-				<% end %>
+			<%
+				otherOptions = options.drop(1)
+				if (options.count < 2)
+					otherOptions.push(" ")
+				end
+			%>
+			
+			<% otherOptions.each do |option| %>
+				<% cCount = 1 %>
+				<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
+					<%# r# %>
+					<th class="r<%= rCount %>">r<%= rCount %></th>
+
+					<%# Option %>
+					<th class="vertical r<%= rCount %>"><%= option.is_a?(String) ? option : option.name %></th>
+
+					<%# Playable cells %>
+					<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
+						<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
+							<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
+								id="r<%= rCount %>c<%= cCount %>">
+								&nbsp;
+							</td>
+							<% cCount += 1 %>
+						<% end %>
+					<% end %>	
+					<% rCount += 1 %>			
+				</tr>
 			<% end %>
 		<% end %>
 	<% end %>

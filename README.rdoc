@@ -66,6 +66,8 @@ x.   When hovering over a cell, highlight relevant th's
 x.     Row 0 (c#) th's
 x.     Row 1 (category) th's
 ===>>> I'm here
+     Break up show.html.erb into fragments
+     When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
      Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
