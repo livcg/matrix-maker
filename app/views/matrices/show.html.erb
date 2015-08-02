@@ -34,7 +34,7 @@
 		<%# Row 0: Column #'s for cells %>
 		<tr>
 			<%# Blank top left corner %>
-			<th colspan="3" rowspan="3">&nbsp;</th>
+			<th colspan="3" rowspan="3" class="r0 c0">&nbsp;</th>
 
 			<%# c# %>
 			<%
@@ -155,9 +155,14 @@
 <div id="moves">
 	<div>
 	<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
-	    <span>[ <%= move.cell %> : <%= move.symbol %> ]</span>
-	    <% if ((index + 1) % 10) == 0 %>
-	    	</div><div>
+		<% if move.cell == "0" %>
+			<%# Move note %>
+			</div><div>Note: <%= move.symbol %></div><div>
+		<% else %>
+		    <span id=m<%= move.id%>>[ <%= move.cell %> : <%= move.symbol %> ]</span>
+		    <% if ((index + 1) % 10) == 0 %>
+		    	</div><div>
+	    	<% end %>
     	<% end %>
 	<% end %>
 	</div>

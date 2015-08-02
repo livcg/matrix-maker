@@ -40,7 +40,7 @@ $(document).ready(function() {
 
     // Toggle cells between 'X', 'O', 'X?', 'O?', and ''
     var symbols = [ 'X', 'O', 'X?', 'O?', '' ]
-    $("td.cell").unbind('click').click( function() {
+    $("td.cell").unbind("click").click( function() {
  		current = $(this).text()
  		i = 0
  		newSymbolIndex = 0
@@ -67,12 +67,26 @@ $(document).ready(function() {
 		$.post( addMoveUrl,
 				{ move: { cell: cellId, symbol: newSymbol }}
 		).fail(function() {
-			alert("Warning: Failed to store your move on the server - [ " + cellId + " : " + newSymbol + " ]")
+			alert("Warning: Failed to save your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
 
 		return false
-   })
+    })
+ 
+    // Add note to moves
+    $("th.r0.c0").unbind("click").click( function() {
+		// Update move list
+		note = "NOTE"
+		string = "<div><span>Note: NOTE</span></div><div></div>"
+		$("div#moves").append(string)
 
+		// Update server
+    	$.post( addMoveUrl,
+    			{ move: { cell: 0, symbol: note }}
+    	).fail(function() {
+    		alert("Failed to save note on moves on the server")
+    	})
+    })
 })
 
 
