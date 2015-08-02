@@ -11,7 +11,6 @@
 
 <table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
 
-
 	<%# No categories %>
 	<% if numCategories == 0 %> 
 		<tr>
@@ -19,55 +18,56 @@
 			<th>&nbsp;</th>
 		</tr>
 		<tr>
-			<th>Add 1st category below ...<%# <a href="">Add 1st category</a> %></th>
+			<th>Add 1st category below ...</th>
 		</tr>
 
 	<% else %>
-		<% categories = @matrix.categories %>
+		<% 
+			categories = @matrix.categories.sort_by { |category| category.created_at }
+			categoriesForColumns = categories.drop(1)
+			categoriesForRows = [ categories.first ].concat(categories.drop(2).reverse)
+		%>
 
 		<%# Row 0: Column #'s' for cells %>
 		<tr>
 			<%# Blank top left corner %>
 			<th colspan="3" rowspan="3">&nbsp;</th>
 
-			<% cCount = 1 %>
-			<%#*** Move below into a fragment %>
-			<% categories.drop(1).each do |category| %>
-				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
-					<th class="c<%= cCount %>">c<%= cCount %></th>
-					<% cCount += 1 %>
-				<% end %>
-				<% if category.options.count < minNumOptions %>
-					<% for i in (category.options.count + 1)..minNumOptions %>
-						<th class="c<%= cCount %>">c<%= cCount %></th>
-						<% cCount += 1 %>
-					<% end %>
-				<% end %>
-			<% end %>			
-			<%#*** Move above into a fragment %>
+			<%# c# %>
+			<%
+				numCols = 0
+				categoriesForColumns.each do |category| 
+					numCols += category.options.count
+					if category.options.count < minNumOptions
+						numCols += minNumOptions
+					end
+				end
+				cCount = 1			
+			%>
+			<% for i in 1..numCols do %>
+				<th class="c<%= cCount %>">c<%= cCount %></th>
+				<% cCount += 1 %>
+			<% end %>
 		</tr>
 
 		<%# Row 1: Category 2..N %>
 		<tr>			
 			<% cCount = 0 %>
-			<% categories.drop(1).each do |category| %>
+			<% categoriesForColumns.each do |category| %>
 				<% 
 					numCols = category.options.count < minNumOptions ? minNumOptions : category.options.count
 					classes = (1..numCols).map() { |i| "c" + (cCount += 1).to_s }.join(" ")
 				%>
 				<th colspan="<%= numCols %>" class="<%= classes %>">
-					<%= category.name %> <%# <a href="">[e]</a> %>
+					<%= category.name %>
 				</th>
 			<% end %>
-
-			<%# "Add category" %>
-			<%# <th rowspan="2"><a href="">Add category</a></th> %><%#*** add colspan? %>
 		</tr>
 		
 		<%# Row 2: Options for categories 2..N %>
 		<tr>
 			<% cCount = 0 %>
-			<% categories.drop(1).each do |category| %>
+			<% categoriesForColumns.each do |category| %>
 				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
 					<th class="c<%= cCount += 1 %>"><%= option.name %></th>
 				<% end %>
@@ -80,10 +80,7 @@
 		</tr>
 
 		<%# Row 3 on: Category 1 & its options, then Category N-1 & its options, etc. %>
-		<% 	
-			categoriesForRows = [ @matrix.categories.first ].concat(@matrix.categories.drop(2).reverse)
-			rCount = 1
-		%>		
+		<% 	rCount = 1 %>		
 		<% categoriesForRows.each_with_index do |category, rowGroupIndex| %>
 			<%
 				options = category.options.sort_by { |o| o.created_at }
@@ -114,7 +111,7 @@
 
 					<%# Playable cells %>
 					<% cCount = 1 %>
-					<% categories.slice(1, numCategories - 1 - rowGroupIndex)
+					<% categoriesForColumns.slice(0, numCategories - 1 - rowGroupIndex)
 							.each_with_index do |columnCategory, columnGroupIndex| %>
 						<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
 							<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
