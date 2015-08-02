@@ -87,64 +87,35 @@
 		<% categoriesForRows.each_with_index do |category, rowGroupIndex| %>
 			<%
 				options = category.options.sort_by { |o| o.created_at }
-				categorySpan = options.count < 2 ? minNumOptions : options.count
-				cCount = 1
-			%>
-
-			<%# Category, first option, & cells %>			
-			<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
-				<%# r# %>
-				<th class="r<%= rCount %>">r<%= rCount %></th>
-
-				<%# Category %>				
-				<% classes = "vertical " + (0..(categorySpan - 1)).map() { |i| "r" + (rCount + i).to_s }.join(" ") %>
-				<th class="<%= classes %>" rowspan="<%= categorySpan %>"><%= category.name %> 
-					<%# <a href="">[e]</a> %>
-				</th>
-				
-				<%# Option %>
-				<% 
-					text = " " #*** Use &nbsp; ?
-					if options.count > 0 
-						text = options.first.name
+				if options.count < 2
+					for i in 1..minNumOptions do
+						options.push(" ") #*** Use &nbsp;
 					end
-				%>
-				<th class="vertical r<%= rCount %>"><%= text %></th>
-
-				<%#*** Move below into a fragment %>
-				<%# Playable cells %>
-				<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
-					<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
-						<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
-							id="r<%= rCount %>c<%= cCount %>">
-							&nbsp;
-						</td>
-						<% cCount += 1 %>
-					<% end %>
-				<% end %>
-				<%#*** Move above into a fragment %>
-			<% rCount += 1 %>
-			</tr>
-
-			<%# Rest of the options & cells %>
-			<%
-				otherOptions = options.drop(1)
-				if (options.count < 2)
-					otherOptions.push(" ")
 				end
+				categorySpan = options.count
 			%>
-			
-			<% otherOptions.each do |option| %>
-				<% cCount = 1 %>
+
+			<% options.each_with_index do |option, optionIndex| %>
 				<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 					<%# r# %>
 					<th class="r<%= rCount %>">r<%= rCount %></th>
 
+					<%# Category %>
+					<% if optionIndex == 0 %>
+						<%
+							classes = "vertical " + 
+								(0..(categorySpan - 1)).map() { |i| "r" + (rCount + i).to_s }.join(" ") 
+						%>
+						<th class="<%= classes %>" rowspan="<%= categorySpan %>"><%= category.name %></th>
+					<% end %>
+					
 					<%# Option %>
 					<th class="vertical r<%= rCount %>"><%= option.is_a?(String) ? option : option.name %></th>
 
 					<%# Playable cells %>
-					<% categories.slice(1, numCategories - 1 - rowGroupIndex).each_with_index do |columnCategory, columnGroupIndex| %>
+					<% cCount = 1 %>
+					<% categories.slice(1, numCategories - 1 - rowGroupIndex)
+							.each_with_index do |columnCategory, columnGroupIndex| %>
 						<% for i in 1..(columnCategory.options.count < minNumOptions ? minNumOptions : columnCategory.options.count) %>
 							<td class="cell r<%= rCount %> c<%=cCount %> <%= columnGroupIndex.odd? ? 'oddColumnGroup' : 'evenColumnGroup' %>"
 								id="r<%= rCount %>c<%= cCount %>">
@@ -152,8 +123,8 @@
 							</td>
 							<% cCount += 1 %>
 						<% end %>
-					<% end %>	
-					<% rCount += 1 %>			
+					<% end %>
+					<% rCount += 1 %>
 				</tr>
 			<% end %>
 		<% end %>
