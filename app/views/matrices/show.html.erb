@@ -11,8 +11,9 @@
 
 <table class="matrix" border="1px solid black" border-collapse="collapse"><%# *** Move to CSS %>
 
-	<%# No categories %>
 	<% if numCategories == 0 %> 
+		<%# No categories %>
+
 		<tr>
 			<th>&nbsp;</th>
 			<th>&nbsp;</th>
@@ -22,13 +23,15 @@
 		</tr>
 
 	<% else %>
+		<%# > 0 categories %>
+
 		<% 
 			categories = @matrix.categories.sort_by { |category| category.created_at }
 			categoriesForColumns = categories.drop(1)
 			categoriesForRows = [ categories.first ].concat(categories.drop(2).reverse)
 		%>
 
-		<%# Row 0: Column #'s' for cells %>
+		<%# Row 0: Column #'s for cells %>
 		<tr>
 			<%# Blank top left corner %>
 			<th colspan="3" rowspan="3">&nbsp;</th>
@@ -45,7 +48,9 @@
 				cCount = 1			
 			%>
 			<% for i in 1..numCols do %>
-				<th class="c<%= cCount %>">c<%= cCount %></th>
+				<th class="c<%= cCount %>">
+					c<%= cCount %>
+				</th>
 				<% cCount += 1 %>
 			<% end %>
 		</tr>
@@ -68,13 +73,18 @@
 		<tr>
 			<% cCount = 0 %>
 			<% categoriesForColumns.each do |category| %>
-				<% category.options.sort_by { |o| o.created_at }.each do |option| %>
-					<th class="c<%= cCount += 1 %>"><%= option.name %></th>
-				<% end %>
-				<% if category.options.count < minNumOptions %>
-					<% for i in (category.options.count + 1)..minNumOptions %>
-						<th class="c<%= cCount += 1 %>">&nbsp;</th>
-					<% end %>
+				<% 
+					options = category.options.sort_by { |option| option.created_at }
+					if options.count < minNumOptions
+						for i in (options.count + 1)..minNumOptions
+							options.push(" ") #*** Use &nbsp;
+						end
+					end
+				%>
+				<% options.each do |option| %>
+					<th class="c<%= cCount += 1 %>">
+						<%= option.is_a?(String) ? option : option.name %>
+					</th>
 				<% end %>
 			<% end %>
 		</tr>
@@ -95,7 +105,9 @@
 			<% options.each_with_index do |option, optionIndex| %>
 				<tr class="<%= rowGroupIndex.odd? ? 'oddRowGroup' : 'evenRowGroup' %>">
 					<%# r# %>
-					<th class="r<%= rCount %>">r<%= rCount %></th>
+					<th class="r<%= rCount %>">
+						r<%= rCount %>
+					</th>
 
 					<%# Category %>
 					<% if optionIndex == 0 %>
@@ -103,11 +115,15 @@
 							classes = "vertical " + 
 								(0..(categorySpan - 1)).map() { |i| "r" + (rCount + i).to_s }.join(" ") 
 						%>
-						<th class="<%= classes %>" rowspan="<%= categorySpan %>"><%= category.name %></th>
+						<th class="<%= classes %>" rowspan="<%= categorySpan %>">
+							<%= category.name %>
+						</th>
 					<% end %>
 					
 					<%# Option %>
-					<th class="vertical r<%= rCount %>"><%= option.is_a?(String) ? option : option.name %></th>
+					<th class="vertical r<%= rCount %>">
+						<%= option.is_a?(String) ? option : option.name %>
+					</th>
 
 					<%# Playable cells %>
 					<% cCount = 1 %>
