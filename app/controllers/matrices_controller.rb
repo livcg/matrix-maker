@@ -38,8 +38,18 @@ class MatricesController < ApplicationController
 	def destroy
 		@matrix = Matrix.find(params[:id])
 		@matrix.destroy
-
 		redirect_to matrices_path
+	end
+
+	def undomoves
+		@matrix = Matrix.find(params[:id])
+		lastMove = @matrix.moves.find(params[:move_id])
+		@matrix.moves.map() { |move|
+			if (move.id >= lastMove.id)
+				move.destroy
+			end
+		}
+		redirect_to matrix_path
 	end
 
 	private

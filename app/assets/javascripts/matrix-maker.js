@@ -3,7 +3,7 @@
 
 getMovesUrl = location.href + "/moves"
 addMoveUrl = location.href + "/moves"
-undoMovesUrl = location.href + "/moves"
+undoMovesUrl = location.href + "/undomoves"
 maxMovesPerColumn = 10
 moveCounter = 1
 
@@ -86,32 +86,18 @@ $(document).ready(function() {
     		alert("Failed to save note on moves on the server")
     	})
     })
-
-//*** fix
-  //   $("div#moves span").unbind("click").click(function() {
-  //   	moveId = $(this).attr("id")
-  //   	alert("Are you sure you want to undo moves after move ID " + moveId + "?") //*** support cancel
-	 //    $.getJSON(undoMovesUrl, { id: moveId }
-	 //    ).done(function(data) {
-	 //    	$("table.matrix td").html(" ")
-	 //    	$.each(data, function(i, move) {
-		//     	symbol = move[2]
-		//     	if (symbol != null) {
-		// 	    	moveId = move[0]
-		// 	    	cellId = move[1]
-		// 	    	$("td#" + cellId).text(symbol)
-		//     	}
-		// 	})
-		// })    	
-  //   })
 })
 
 function addMoveToMoveList(moveId, cellId, newSymbol) {
-	string = "<span id=\"m" + moveCounter + "i" + moveId + "\">"
+	string = "<span id=\"m" + moveCounter + "i" + moveId + "\">" // m<MOVE_#>i<MOVE_ID>
 	if (cellId == "0") {
 		string = string + " Note: " + newSymbol
 	} else {
-		string = " <span>" + moveCounter + " : " + cellId + " : " + newSymbol + " (x)"
+		string = string + moveCounter + ": " + cellId + " : " + newSymbol 
+			+ " <a href=\"" + undoMovesUrl + "/" + moveId 
+			+ "\" data-confirm=\"Are you sure you want to undo this move (#"
+			+ moveCounter + ": " + cellId + " : " + newSymbol 
+			+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
 	}
 	string = string + "</span></br>"
 	$("table#moves td:last-of-type").append(string)

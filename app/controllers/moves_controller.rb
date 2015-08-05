@@ -12,6 +12,13 @@ class MovesController < ApplicationController
     redirect_to matrix_path(@matrix)
   end
 
+  def destroy
+	@matrix = Matrix.find(params[:matrix_id])
+    @move = @matrix.moves.find(params[:id])
+    @move.destroy
+	redirect_to matrix_path(@matrix)
+  end
+
   private
     def move_params
       params.require(:move).permit(:cell, :symbol)
