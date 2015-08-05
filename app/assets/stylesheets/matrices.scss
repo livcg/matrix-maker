@@ -29,3 +29,14 @@ table.matrix tr:hover td, tr:hover th, td.hover, th.hover {
 	background-color: yellow;
 }
 
+table#moves {
+	border: 1px solid black;
+	border-collapse: collapse;
+}
+
+table#moves td {
+	border: 1px solid black;
+	border-collapse: collapse;
+	vertical-align: top;
+}
+

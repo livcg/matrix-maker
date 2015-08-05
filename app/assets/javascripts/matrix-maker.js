@@ -89,6 +89,8 @@ $(document).ready(function() {
 })
 
 function addMoveToMoveList(moveId, cellId, newSymbol) {
+	if ((moveCounter > maxMovesPerColumn) && (moveCounter % maxMovesPerColumn == 1))
+		$("table#moves tr").append("<td></td>")
 	string = "<span id=\"m" + moveCounter + "i" + moveId + "\">" // m<MOVE_#>i<MOVE_ID>
 	if (cellId == "0") {
 		string = string + " Note: " + newSymbol
@@ -101,8 +103,6 @@ function addMoveToMoveList(moveId, cellId, newSymbol) {
 	}
 	string = string + "</span></br>"
 	$("table#moves td:last-of-type").append(string)
-	if (moveCounter % maxMovesPerColumn == 0)
-		$("table#moves tr").append("<td></td>")
 	moveCounter++
 }
 
