@@ -66,13 +66,14 @@ x.   When hovering over a cell, highlight relevant th's
 x.     Row 0 (c#) th's
 x.     Row 1 (category) th's
 x.   Refactor views/matrices/show.html.erb
+x.   List moves in a table, 10 moves per column
+x.   List moves in JS vs. erb
      When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
      Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
      Change colour of th's for options (e.g. lightseagreen); add class="option"?
      Display moves in table format?
-===>>> I'm here
      Add a way to mark the game as solved
      Add notes field
      Add a category section
@@ -82,6 +83,8 @@ x.     Move button next to text box
 ** Etc.
 * Write methods/helpers for sorting matrices, categories, and options
 * Add tests
+===>>> I'm here
+* Add undo moves function
 * Remove dupe code in views/matrices/show.html.erb
 * Build simple v2
 ** Create default matrix w/ 2 categories & 2 options each

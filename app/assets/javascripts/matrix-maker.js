@@ -4,6 +4,8 @@
 getMovesUrl = location.href + "/moves"
 addMoveUrl = location.href + "/moves"
 undoMovesUrl = location.href + "/moves"
+maxMovesPerColumn = 10
+moveCounter = 1
 
 $(document).ready(function() {
 
@@ -29,10 +31,12 @@ $(document).ready(function() {
 
     // Replay moves
 	for (i = 0; i < moves.length; i++) { 
-		symbol = moves[i][1]
-		if (symbol != null) {
-			cellId = moves[i][0] 
+		moveId = moves[i][0]
+		cellId = moves[i][1] 
+		symbol = moves[i][2]
+		if ((symbol != undefined) && (symbol != null)) {
 			$("td#" + cellId).text(symbol)
+			addMoveToMoveList(moveId, cellId, symbol)
 		} 
 	}
 
@@ -56,10 +60,7 @@ $(document).ready(function() {
 		tdElement.html(newSymbol)
 
 		// Update move list
-		string = " <span>[ " + cellId + " : " + newSymbol + " ]</span> "
-		$("div#moves div:last-child").append(string)
-		if ($("div#moves div:last-child span").length == 10)
-			$("div#moves").append("<div></div>")
+		addMoveToMoveList("-1", cellId, newSymbol) //*** Change moveId
 
 		// Update server
 		$.post( addMoveUrl,
@@ -85,6 +86,38 @@ $(document).ready(function() {
     		alert("Failed to save note on moves on the server")
     	})
     })
+
+//*** fix
+  //   $("div#moves span").unbind("click").click(function() {
+  //   	moveId = $(this).attr("id")
+  //   	alert("Are you sure you want to undo moves after move ID " + moveId + "?") //*** support cancel
+	 //    $.getJSON(undoMovesUrl, { id: moveId }
+	 //    ).done(function(data) {
+	 //    	$("table.matrix td").html(" ")
+	 //    	$.each(data, function(i, move) {
+		//     	symbol = move[2]
+		//     	if (symbol != null) {
+		// 	    	moveId = move[0]
+		// 	    	cellId = move[1]
+		// 	    	$("td#" + cellId).text(symbol)
+		//     	}
+		// 	})
+		// })    	
+  //   })
 })
+
+function addMoveToMoveList(moveId, cellId, newSymbol) {
+	string = "<span id=\"m" + moveCounter + "i" + moveId + "\">"
+	if (cellId == "0") {
+		string = string + " Note: " + newSymbol
+	} else {
+		string = " <span>" + moveCounter + " : " + cellId + " : " + newSymbol + " (x)"
+	}
+	string = string + "</span></br>"
+	$("table#moves td:last-of-type").append(string)
+	if (moveCounter % maxMovesPerColumn == 0)
+		$("table#moves tr").append("<td></td>")
+	moveCounter++
+}
 
 
