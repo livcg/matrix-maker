@@ -150,23 +150,41 @@
 
 <h2>Moves</h2>
 
-<p>Key: [ &lt;CELL_ID&gt; : &lt;SYMBOL&gt; ]</p>
+<p>Key:<br/>
+	[ &lt;MOVE_#&gt; : &lt;CELL_ID&gt; : &lt;SYMBOL&gt; <a href="/matrices/<MATRIX_ID>/undomoves/<MOVE_ID>">(x)</a> ]<br/>
+</p>
 
 <div id="moves">
 	<div>
-	<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
-		<% if move.cell == "0" %>
-			<%# Move note %>
-			</div><div>Note: <%= move.symbol %></div><div>
-		<% else %>
-		    <span id=m<%= move.id%>>[ <%= move.cell %> : <%= move.symbol %> ]</span>
-		    <% if ((index + 1) % 10) == 0 %>
-		    	</div><div>
+		<% moveCounter = 1 %>
+		<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
+			<% if move.cell == "0" %>
+				<%# Move note %>
+				</div><div>Note: <%= move.symbol %></div><div>
+			<% else %>
+			    <span id="m<%= moveCounter %>i<%= move.id %>">
+			    	[ <%= moveCounter %>: <%= move.cell %> : <%= move.symbol %> 
+			    		<%= link_to '(x)', undo_moves_path(@matrix, move), method: :post,
+				    			data: { confirm: "Are you sure you want to undo moves after move #" +
+				    				moveCounter.to_s + "? (" + move.cell + " : " + move.symbol + " )" } %>
+    				] .
+			    </span>
+			    <% if ((index + 1) % 10) == 0 %>
+			    	</div><div>
+		    	<% end %>
+				<% moveCounter += 1 %>
 	    	<% end %>
-    	<% end %>
-	<% end %>
+		<% end %>
 	</div>
 </div>	
+
+<script id="moves-data">
+	var moves = [
+	<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
+		[ "<%= move.cell %>", "<%= move.symbol %>" ],
+	<% end %>
+		[] ] <%#*** Ick %>
+</script>
 
 <br/><br/>
 <hr/>

@@ -3,6 +3,7 @@
 
 getMovesUrl = location.href + "/moves"
 addMoveUrl = location.href + "/moves"
+undoMovesUrl = location.href + "/moves"
 
 $(document).ready(function() {
 
@@ -27,20 +28,17 @@ $(document).ready(function() {
 	})
 
     // Replay moves
-    $.getJSON(getMovesUrl).done( function(data) {
-    	$.each(data, function(i, move) {
-	    	symbol = move[2]
-	    	if (symbol != null) {
-		    	moveId = move[0]
-		    	cellId = move[1]
-		    	$("td#" + cellId).text(symbol)
-	    	}
-		})
-	})
+	for (i = 0; i < moves.length; i++) { 
+		symbol = moves[i][1]
+		if (symbol != null) {
+			cellId = moves[i][0] 
+			$("td#" + cellId).text(symbol)
+		} 
+	}
 
     // Toggle cells between 'X', 'O', 'X?', 'O?', and ''
     var symbols = [ 'X', 'O', 'X?', 'O?', '' ]
-    $("td.cell").unbind("click").click( function() {
+    $("td.cell").unbind("click").click(function() {
  		current = $(this).text()
  		i = 0
  		newSymbolIndex = 0
@@ -74,7 +72,7 @@ $(document).ready(function() {
     })
  
     // Add note to moves
-    $("th.r0.c0").unbind("click").click( function() {
+    $("th.r0.c0").unbind("click").click(function() {
 		// Update move list
 		note = "NOTE"
 		string = "<div><span>Note: NOTE</span></div><div></div>"
