@@ -47,6 +47,7 @@ x.  Change ID's to start with "r1c1"?; remove old entries in moves table
 x.  On page load, restore moves
 x.  When move is made, update view's list of moves
 x. Add undo moves function
+x. Add a way to mark off a block of moves, e.g. "initial pass"
 * Expand on README
 * Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
@@ -97,4 +98,4 @@ x.     Move button next to text box
 * Don't allow cells that don't have corresponding option names to be clicked on?
 * Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
 ===>>> I'm here
-* Add a way to mark off a block of moves, e.g. "initial pass"
+* Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received

@@ -56,22 +56,32 @@ $(document).ready(function() {
 		cellId = $(this).attr("id")
 		newSymbol = symbols[newSymbolIndex]
 
+		// Update moves array
+		moves.push([ -1, cellId, newSymbol ]) //*** Change -1
+		newMoveIndex = moves.length - 1 //*** Ick
+
 		// Update symbol in matrix
 		tdElement.html(newSymbol)
 
-		// Update move list
-		addMoveToMoveList("-1", cellId, newSymbol) //*** Change moveId
+		// Update move list on page
+		addMoveToMoveList("-1", cellId, newSymbol) //*** Change -1
 
 		// Update server
 		$.post( addMoveUrl,
 				{ move: { cell: cellId, symbol: newSymbol }}
-		).fail(function() {
+		).success(function(data) {
+			moveId = data
+			moves[newMoveIndex][0] = moveId
+			string = " " + getUndoMoveLink(moveCounter - 1, moveId, cellId, newSymbol)
+			$("table#moves td span#m" + newMoveIndex).append(string).attr("id", "m" + newMoveIndex + "i" + moveId)
+		}).fail(function() {
 			alert("Warning: Failed to save your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
 
 		return false
     })
- 
+
+if (false) { 
     // Add note to moves
     $("th.r0.c0").unbind("click").click(function() {
 		// Update move list
@@ -86,24 +96,40 @@ $(document).ready(function() {
     		alert("Failed to save note on moves on the server")
     	})
     })
+}
+
 })
 
 function addMoveToMoveList(moveId, cellId, newSymbol) {
 	if ((moveCounter > maxMovesPerColumn) && (moveCounter % maxMovesPerColumn == 1))
 		$("table#moves tr").append("<td></td>")
-	string = "<span id=\"m" + moveCounter + "i" + moveId + "\">" // m<MOVE_#>i<MOVE_ID>
+	string = "<span id=\"m" + moveCounter //*** Add moveId to span's ID
+				+ "\">"
+				+ moveCounter + ": "
 	if (cellId == "0") {
-		string = string + " Note: " + newSymbol
+		string = "Note: "
 	} else {
-		string = string + moveCounter + ": " + cellId + " : " + newSymbol 
-			+ " <a href=\"" + undoMovesUrl + "/" + moveId 
-			+ "\" data-confirm=\"Are you sure you want to undo this move (#"
-			+ moveCounter + ": " + cellId + " : " + newSymbol 
-			+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
+		string = string + cellId + " : " 
+	}
+	string = string + newSymbol 
+	if (moveId != -1) {
+		string = string + " " + getUndoMoveLink(moveCounter, moveId, cellId, newSymbol)
+		// string = string + " <a href=\"" + undoMovesUrl + "/" + moveId 
+		// 			+ "\" data-confirm=\"Are you sure you want to undo this move (#"
+		// 			+ moveCounter + ": " + cellId + " : " + newSymbol 
+		// 			+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
 	}
 	string = string + "</span></br>"
 	$("table#moves td:last-of-type").append(string)
 	moveCounter++
+}
+
+function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
+	string = "<a href=\"" + undoMovesUrl + "/" + moveId 
+				+ "\" data-confirm=\"Are you sure you want to undo this move (#"
+				+ moveCount + ": " + cellId + " : " + symbol 
+				+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
+	return string
 }
 
 
