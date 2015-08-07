@@ -97,5 +97,6 @@ x.     Move button next to text box
 * Remove unused columns in DB
 * Don't allow cells that don't have corresponding option names to be clicked on?
 * Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
-===>>> I'm here
+<!-- ===>>> I'm here -->
 * Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
+* On heroku, adding a move sometimes results in bad insertion of undo move link?

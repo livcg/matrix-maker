@@ -9,7 +9,7 @@ class MovesController < ApplicationController
   def create
     @matrix = Matrix.find(params[:matrix_id])
     @move = @matrix.moves.create(move_params)
-    redirect_to matrix_path(@matrix)
+    render json: @move.id
   end
 
   def destroy
@@ -17,6 +17,16 @@ class MovesController < ApplicationController
     @move = @matrix.moves.find(params[:id])
     @move.destroy
 	redirect_to matrix_path(@matrix)
+  end
+
+  def createnote
+  	byebug
+    params.require(:id) #*** Why not :matrix_id?
+    params.permit(:movenote) #*** Why not in params[:id] hash?
+    matrix = Matrix.find(params[:id])
+    move_note_params = [ cell: "0", symbol: params[:movenote] ]
+    move = matrix.moves.create(move_note_params)
+    render json: move[0].id #*** Why is move an array?
   end
 
   private

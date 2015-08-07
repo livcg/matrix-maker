@@ -171,20 +171,19 @@
 <br/><br/>
 <hr/>
 
-<% if false %>
-<h2>Add a move</h2>
 
-<%= form_for([@matrix, @matrix.moves.build]) do |f| %>
-  <p>
-    <%= f.label :cell %> <%= f.text_field :cell %>
-    <%= f.label :symbol %> <%= f.text_field :symbol %>
-    <%= f.submit %>
-  </p>
+<h2>Add a note between moves</h2>
+
+<%#*** Change this to an AJAX call %>
+<%= form_tag(add_move_note_path(@matrix), method: "post") do %>
+	<%= label_tag(:movenote, "Note: ") %>
+	<%= text_field_tag(:movenote) %>
+	<%= submit_tag("Add note") %>
 <% end %>
 
 <br/><br/><br/>
 <hr/>
-<% end %>
+
 
 <h2>Categories &amp; Options</h2>
 <%= render @matrix.categories %>

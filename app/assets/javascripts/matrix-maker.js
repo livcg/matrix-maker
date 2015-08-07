@@ -34,7 +34,8 @@ $(document).ready(function() {
 		moveId = moves[i][0]
 		cellId = moves[i][1] 
 		symbol = moves[i][2]
-		if ((symbol != undefined) && (symbol != null)) {
+		if ((cellId != undefined) && (cellId.length > 0) && (symbol != undefined) && (symbol != null)) { //*** ick
+			console.log("Move: " + cellId + " : " + symbol)
 			$("td#" + cellId).text(symbol)
 			addMoveToMoveList(moveId, cellId, symbol)
 		} 
@@ -63,15 +64,18 @@ $(document).ready(function() {
 		// Update symbol in matrix
 		tdElement.html(newSymbol)
 
-		// Update move list on page
+		// Update move list on the page
 		addMoveToMoveList("-1", cellId, newSymbol) //*** Change -1
 
 		// Update server
 		$.post( addMoveUrl,
 				{ move: { cell: cellId, symbol: newSymbol }}
 		).success(function(data) {
+			// Update moves array w/ the new moveId
 			moveId = data
 			moves[newMoveIndex][0] = moveId
+
+			// Add undo move link to the move list on the page
 			string = " " + getUndoMoveLink(moveCounter - 1, moveId, cellId, newSymbol)
 			$("table#moves td span#m" + newMoveIndex).append(string).attr("id", "m" + newMoveIndex + "i" + moveId)
 		}).fail(function() {
@@ -107,27 +111,23 @@ function addMoveToMoveList(moveId, cellId, newSymbol) {
 				+ "\">"
 				+ moveCounter + ": "
 	if (cellId == "0") {
-		string = "Note: "
+		string = "<span id=\"i" + moveId + "\">Note: " //*** Add moveId to span's ID to allow notes to be deleted
 	} else {
 		string = string + cellId + " : " 
+		moveCounter++
 	}
 	string = string + newSymbol 
 	if (moveId != -1) {
 		string = string + " " + getUndoMoveLink(moveCounter, moveId, cellId, newSymbol)
-		// string = string + " <a href=\"" + undoMovesUrl + "/" + moveId 
-		// 			+ "\" data-confirm=\"Are you sure you want to undo this move (#"
-		// 			+ moveCounter + ": " + cellId + " : " + newSymbol 
-		// 			+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
 	}
 	string = string + "</span></br>"
 	$("table#moves td:last-of-type").append(string)
-	moveCounter++
 }
 
 function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
 	string = "<a href=\"" + undoMovesUrl + "/" + moveId 
 				+ "\" data-confirm=\"Are you sure you want to undo this move (#"
-				+ moveCount + ": " + cellId + " : " + symbol 
+				+ moveCount + ": " + cellId + " : " + symbol //*** Modify if move is a note
 				+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
 	return string
 }
