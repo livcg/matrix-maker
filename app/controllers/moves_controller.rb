@@ -20,7 +20,6 @@ class MovesController < ApplicationController
   end
 
   def createnote
-  	byebug
     params.require(:id) #*** Why not :matrix_id?
     params.permit(:movenote) #*** Why not in params[:id] hash?
     matrix = Matrix.find(params[:id])

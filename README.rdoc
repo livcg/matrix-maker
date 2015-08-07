@@ -100,3 +100,4 @@ x.     Move button next to text box
 <!-- ===>>> I'm here -->
 * Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
+* On heroku, adding a move note results in an error
