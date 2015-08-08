@@ -21,9 +21,9 @@ class MovesController < ApplicationController
 
   def createnote
     params.require(:id) #*** Why not :matrix_id?
-    params.permit(:movenote) #*** Why not in params[:id] hash?
+    params.permit(:note) #*** Why not in params[:id] hash?
     matrix = Matrix.find(params[:id])
-    move_note_params = [ cell: "0", symbol: params[:movenote] ]
+    move_note_params = [ cell: "0", symbol: params[:note] ]
     move = matrix.moves.create(move_note_params)
     render json: move[0].id #*** Why is move an array?
   end

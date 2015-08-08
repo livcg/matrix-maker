@@ -4,8 +4,10 @@
 GET_MOVES_URL = location.href + "/moves"
 ADD_MOVE_URL = location.href + "/moves"
 UNDO_MOVES_URL = location.href + "/undomoves"
+ADD_NOTE_URL = location.href + "/addmovenote"
 MAX_MOVES_PER_COLUMN = 10
 DEFAULT_MOVE_ID = -1
+NOTE_CELL_ID = "0"
 SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
 
 moveCounter = 1
@@ -71,7 +73,7 @@ $(document).ready(function() {
 		moveCount = addToMoveListOnPage(DEFAULT_MOVE_ID, cellId, newSymbol, moveArrIndex)
 
 		// Update server
-		$.post( ADD_MOVE_URL,
+		$.post(ADD_MOVE_URL,
 				{ move: { cell: cellId, symbol: newSymbol }}
 		).success(function(data) {
 			// Update moves array w/ the new moveId
@@ -87,23 +89,29 @@ $(document).ready(function() {
 		return false
     })
 
-if (false) { 
     // Add note to moves
-    $("th.r0.c0").unbind("click").click(function() {
-		// Update move list
-		note = "NOTE"
-		string = "<div><span>Note: NOTE</span></div><div></div>"
-		$("div#moves").append(string)
+    $("div#note button").unbind("click").click(function() {
+    	note = $("div#note input").prop("value")
+
+		// Update moves array
+		moveArrIndex = moves.push([ DEFAULT_MOVE_ID, NOTE_CELL_ID, note ]) - 1
+
+		// Update move list on the page
+		moveCount = addToMoveListOnPage(DEFAULT_MOVE_ID, NOTE_CELL_ID, note, moveArrIndex)
 
 		// Update server
-    	$.post( ADD_MOVE_URL,
-    			{ move: { cell: 0, symbol: note }}
-    	).fail(function() {
-    		alert("Failed to save note on moves on the server")
-    	})
-    })
-}
+    	$.post(ADD_NOTE_URL, { note: note }
+		).success(function(data) {
+			// Update moves array w/ the new moveId
+			moveId = data
+			moves[moveArrIndex][0] = moveId
 
+			// Update HTML - Add undo move link, update td's ID
+			updateHtmlAfterAddMoveServerCall(moveCount, moveId, NOTE_CELL_ID, note, moveArrIndex)
+		}).fail(function() {
+			alert("Warning: Failed to save your note on the server - [ " + note + " ]")
+		})
+    })
 })
 
 // Regular move:
@@ -121,7 +129,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	if (moveCount % MAX_MOVES_PER_COLUMN == 1)
 		$("table#moves tr").append("<td></td>")
 
-	if (cellId == "0") {
+	if (cellId == NOTE_CELL_ID) {
 		// Note rather than a regular move
 		textPrefix = "Note: "
 	} else {
@@ -137,7 +145,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 
 function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
 	spanId = ""
-	if (cellId == 0) {
+	if (cellId == NOTE_CELL_ID) {
 		// Note
 		spanId = "n" + moveArrIndex + "i" + moveId
 	}  else {
@@ -158,7 +166,7 @@ function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
 	if (moveId != DEFAULT_MOVE_ID) {
 		string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
 					+ "\" data-confirm=\"Are you sure you want to undo this move ("
-						+ (cellId == 0 ? "Note: " : 	(moveCount + ": " + cellId + " : ") )
+						+ (cellId == NOTE_CELL_ID ? "Note: " : 	(moveCount + ": " + cellId + " : ") )
 						+ symbol + ") and all moves after it?\" data-method=\"post\" >(x)</a>"
 	}
 	return string

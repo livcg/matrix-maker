@@ -172,12 +172,9 @@
 
 <h2>Add a note between moves</h2>
 
-<%#*** Change this to an AJAX call %>
-<%= form_tag(add_move_note_path(@matrix), method: "post") do %>
-	<%= label_tag(:movenote, "Note: ") %>
-	<%= text_field_tag(:movenote) %>
-	<%= submit_tag("Add note") %>
-<% end %>
+<div id="note">
+	<label for="note">Note</label> <input type="text" name="note" id="note"> <button type="button">Add note</button>
+</div>
 
 <br/><br/><br/>
 <hr/>
