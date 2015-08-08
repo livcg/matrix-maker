@@ -1,10 +1,13 @@
 
 
 
-getMovesUrl = location.href + "/moves"
-addMoveUrl = location.href + "/moves"
-undoMovesUrl = location.href + "/undomoves"
-maxMovesPerColumn = 10
+GET_MOVES_URL = location.href + "/moves"
+ADD_MOVE_URL = location.href + "/moves"
+UNDO_MOVES_URL = location.href + "/undomoves"
+MAX_MOVES_PER_COLUMN = 10
+DEFAULT_MOVE_ID = -1
+SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
+
 moveCounter = 1
 
 $(document).ready(function() {
@@ -30,47 +33,45 @@ $(document).ready(function() {
 	})
 
     // Replay moves
-	for (i = 0; i < moves.length; i++) { 
-		moveId = moves[i][0]
-		cellId = moves[i][1] 
-		symbol = moves[i][2]
+	for (moveArrIndex = 0; moveArrIndex < moves.length; moveArrIndex++) { 
+		move = moves[moveArrIndex]
+		moveId = move[0]
+		cellId = move[1] 
+		symbol = move[2]
 		if ((cellId != undefined) && (cellId.length > 0) && (symbol != undefined) && (symbol != null)) { //*** ick
 			//*** console.log("Move: " + cellId + " : " + symbol)
 			$("td#" + cellId).text(symbol)
-			addToMoveListOnPage(moveId, cellId, symbol)
+			addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex)
 		} 
 	}
 
     // Toggle cells between 'X', 'O', 'X?', 'O?', and ''
-    var symbols = [ 'X', 'O', 'X?', 'O?', '' ]
     $("td.cell").unbind("click").click(function() {
 		tdElement = $(this)
 		cellId = tdElement.attr("id")
 
     	// Determine new symbol
- 		current = tdElement.text() //*** Change current to currentSymbol
- 		i = 0 //*** Change to symbolIndex
- 		newSymbolIndex = 0
-		for (; i < symbols.length; i++) {
-			    if (current == symbols[i]) {
-					newSymbolIndex = (i+1) % symbols.length
+ 		currentSymbol = tdElement.text().trim()
+		newSymbol = currentSymbol
+		for (symbolIndex = 0; symbolIndex < SYMBOLS.length; symbolIndex++) {
+			    if (currentSymbol == SYMBOLS[symbolIndex]) {
+					newSymbol = SYMBOLS[(symbolIndex + 1) % SYMBOLS.length]
 				break
 		    }
 		}
-		newSymbol = symbols[newSymbolIndex]
 
 		// Update moves array
-		moves.push([ -1, cellId, newSymbol ]) //*** Change -1
+		moves.push([ DEFAULT_MOVE_ID, cellId, newSymbol ])
 		moveArrIndex = moves.length - 1 //*** Ick
 
 		// Update symbol in matrix
 		tdElement.html(newSymbol)
 
 		// Update move list on the page
-		moveCount = addToMoveListOnPage("-1", cellId, newSymbol) //*** Change -1
+		moveCount = addToMoveListOnPage(DEFAULT_MOVE_ID, cellId, newSymbol, moveArrIndex)
 
 		// Update server
-		$.post( addMoveUrl,
+		$.post( ADD_MOVE_URL,
 				{ move: { cell: cellId, symbol: newSymbol }}
 		).success(function(data) {
 			// Update moves array w/ the new moveId
@@ -78,9 +79,7 @@ $(document).ready(function() {
 			moves[moveArrIndex][0] = moveId
 
 			// Update HTML - Add undo move link, update td's ID
-			addUndoMoveLinkToPage(moveCount, moveId, cellId, newSymbol)
-			updateMoveIdOnMoveListOnPage(moveCount, moveId)
-			//*** Handle notes! moveCount always 0
+			updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, newSymbol, moveArrIndex)
 		}).fail(function() {
 			alert("Warning: Failed to save your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
@@ -97,7 +96,7 @@ if (false) {
 		$("div#moves").append(string)
 
 		// Update server
-    	$.post( addMoveUrl,
+    	$.post( ADD_MOVE_URL,
     			{ move: { cell: 0, symbol: note }}
     	).fail(function() {
     		alert("Failed to save note on moves on the server")
@@ -110,50 +109,57 @@ if (false) {
 // Regular move:
 //   <span id="m<MOVE_COUNT>i<MOVE_ID>"><MOVE_COUNT>: <CELL_ID> : <SYMBOL> <UNDO_MOVE_LINK></span><br/>
 // Note:
-//   <span id="m0i<MOVE_ID>">Note: <SYMBOL> <UNDO_MOVE_LINK></span><br/> //*** change ID to "n<MOVE_ARR_INDEX>i<MOVE_ID>" ?
-function addToMoveListOnPage(moveId, cellId, symbol) {
+//   <span id="n<MOVE_ARRAY_INDEX>i<MOVE_ID>">Note: <SYMBOL> <UNDO_MOVE_LINK></span><br/> 
+function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
+	// Defaults for a regular move (not a note)
 	moveCount = moveCounter
+	spanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
+	textPrefix = moveCount + ": " + cellId + " : "
 	string = ""
 
 	// Add new <td> if needed
-	if ((moveCount > maxMovesPerColumn) && (moveCount % maxMovesPerColumn == 1))
+	if (moveCount % MAX_MOVES_PER_COLUMN == 1)
 		$("table#moves tr").append("<td></td>")
 
 	if (cellId == "0") {
 		// Note rather than a regular move
-		moveCount = 0
-		string = "<span id=\"m0i" + moveId + "\">Note: " + symbol + " " 
-			+ getUndoMoveLink(moveCount, moveId, cellId, symbol) + "</span><br/>"
+		textPrefix = "Note: "
 	} else {
 		// Regular move
-		string = "<span id=\"m" + moveCount + "i" + moveId + "\">" + moveCount + " : " 
-			+ cellId + " : " + symbol + " " + getUndoMoveLink(moveCount, moveId, cellId, symbol)
-			+ "</span><br/>"
 		moveCounter++
 	}
+	string = "<span id=\"" + spanId + "\">" + textPrefix + symbol + " " 
+			+ getUndoMoveLink(moveCount, moveId, cellId, symbol, moveArrIndex) + "</span><br/>"
 	$("table#moves td:last-of-type").append(string)
 
 	return moveCount
 }
 
-function addUndoMoveLinkToPage(moveId, cellId, symbol) {
-	string = " " + getUndoMoveLink(moveCount, moveId, cellId, symbol)
-	$("table#moves td span#m" + moveCount + "i-1").append(string)
+function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
+	spanId = ""
+	if (cellId == 0) {
+		// Note
+		spanId = "n" + moveArrIndex + "i" + moveId
+	}  else {
+		spanId = "m" + moveCount + "i" + moveId
+	}
+	return spanId
+}
+
+function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, moveArrIndex) {
+	string = " " + getUndoMoveLink(moveCount, moveId, cellId, symbol, moveArrIndex)
+	oldSpanId = getMoveSpanId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
+	newSpanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
+	$("table#moves td span#" + oldSpanId).append(string).attr("id", newSpanId)
 }
 
 function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
 	string = ""
-	if (moveId != -1) {
-		string = "<a href=\"" + undoMovesUrl + "/" + moveId 
+	if (moveId != DEFAULT_MOVE_ID) {
+		string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
 					+ "\" data-confirm=\"Are you sure you want to undo this move ("
-						+ (moveCount == 0 ? "Note: " : 	(moveCount + ": " + cellId + " : ") )
+						+ (cellId == 0 ? "Note: " : 	(moveCount + ": " + cellId + " : ") )
 						+ symbol + ") and all moves after it?\" data-method=\"post\" >(x)</a>"
 	}
 	return string
 }
-
-function updateMoveIdOnMoveListOnPage(moveCount, moveId) {
-	$("table#moves td span#m" + moveCount + "i-1").attr("id", "m" + moveCount + "i" + moveId)
-}
-
-

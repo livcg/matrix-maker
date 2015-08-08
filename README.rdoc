@@ -71,8 +71,7 @@ x.     Row 1 (category) th's
 x.   Refactor views/matrices/show.html.erb
 x.   List moves in a table, 10 moves per column
 x.   List moves in JS vs. erb
-<!-- ===>>> I'm here -->
-     When adding a move, undo link isn't always getting added to the move list on the page; moveCounter is off
+x.   When adding a move, undo link isn't always getting added to the move list on the page; moveCounter is off
      When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
@@ -102,3 +101,5 @@ x.     Move button next to text box
 * Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
 * Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
+[ I'M HERE ]
+* Fix move notes
