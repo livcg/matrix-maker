@@ -161,6 +161,7 @@
 </table>
 
 <script id="moves-data">
+	// Moves array - [ <MOVE_ID>, <CELL_ID>, <SYMBOL> ]
 	var moves = [
 	<% @matrix.moves.sort_by { |m| m.created_at }.each_with_index do |move, index| %>
 		[ "<%= move.id %>", "<%= move.cell %>", "<%= move.symbol %>" ],

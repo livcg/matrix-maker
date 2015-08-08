@@ -48,6 +48,7 @@ x.  On page load, restore moves
 x.  When move is made, update view's list of moves
 x. Add undo moves function
 x. Add a way to mark off a block of moves, e.g. "initial pass"
+x. On heroku, adding a move note results in an error - Rmv byebug line!
 * Expand on README
 * Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
@@ -70,6 +71,8 @@ x.     Row 1 (category) th's
 x.   Refactor views/matrices/show.html.erb
 x.   List moves in a table, 10 moves per column
 x.   List moves in JS vs. erb
+<!-- ===>>> I'm here -->
+     When adding a move, undo link isn't always getting added to the move list on the page; moveCounter is off
      When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
@@ -97,7 +100,5 @@ x.     Move button next to text box
 * Remove unused columns in DB
 * Don't allow cells that don't have corresponding option names to be clicked on?
 * Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
-<!-- ===>>> I'm here -->
 * Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
-* On heroku, adding a move note results in an error

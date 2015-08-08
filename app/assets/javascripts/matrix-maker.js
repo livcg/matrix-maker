@@ -35,17 +35,21 @@ $(document).ready(function() {
 		cellId = moves[i][1] 
 		symbol = moves[i][2]
 		if ((cellId != undefined) && (cellId.length > 0) && (symbol != undefined) && (symbol != null)) { //*** ick
-			console.log("Move: " + cellId + " : " + symbol)
+			//*** console.log("Move: " + cellId + " : " + symbol)
 			$("td#" + cellId).text(symbol)
-			addMoveToMoveList(moveId, cellId, symbol)
+			addToMoveListOnPage(moveId, cellId, symbol)
 		} 
 	}
 
     // Toggle cells between 'X', 'O', 'X?', 'O?', and ''
     var symbols = [ 'X', 'O', 'X?', 'O?', '' ]
     $("td.cell").unbind("click").click(function() {
- 		current = $(this).text()
- 		i = 0
+		tdElement = $(this)
+		cellId = tdElement.attr("id")
+
+    	// Determine new symbol
+ 		current = tdElement.text() //*** Change current to currentSymbol
+ 		i = 0 //*** Change to symbolIndex
  		newSymbolIndex = 0
 		for (; i < symbols.length; i++) {
 			    if (current == symbols[i]) {
@@ -53,19 +57,17 @@ $(document).ready(function() {
 				break
 		    }
 		}
-		tdElement = $(this)
-		cellId = $(this).attr("id")
 		newSymbol = symbols[newSymbolIndex]
 
 		// Update moves array
 		moves.push([ -1, cellId, newSymbol ]) //*** Change -1
-		newMoveIndex = moves.length - 1 //*** Ick
+		moveArrIndex = moves.length - 1 //*** Ick
 
 		// Update symbol in matrix
 		tdElement.html(newSymbol)
 
 		// Update move list on the page
-		addMoveToMoveList("-1", cellId, newSymbol) //*** Change -1
+		moveCount = addToMoveListOnPage("-1", cellId, newSymbol) //*** Change -1
 
 		// Update server
 		$.post( addMoveUrl,
@@ -73,11 +75,12 @@ $(document).ready(function() {
 		).success(function(data) {
 			// Update moves array w/ the new moveId
 			moveId = data
-			moves[newMoveIndex][0] = moveId
+			moves[moveArrIndex][0] = moveId
 
-			// Add undo move link to the move list on the page
-			string = " " + getUndoMoveLink(moveCounter - 1, moveId, cellId, newSymbol)
-			$("table#moves td span#m" + newMoveIndex).append(string).attr("id", "m" + newMoveIndex + "i" + moveId)
+			// Update HTML - Add undo move link, update td's ID
+			addUndoMoveLinkToPage(moveCount, moveId, cellId, newSymbol)
+			updateMoveIdOnMoveListOnPage(moveCount, moveId)
+			//*** Handle notes! moveCount always 0
 		}).fail(function() {
 			alert("Warning: Failed to save your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
@@ -104,32 +107,53 @@ if (false) {
 
 })
 
-function addMoveToMoveList(moveId, cellId, newSymbol) {
-	if ((moveCounter > maxMovesPerColumn) && (moveCounter % maxMovesPerColumn == 1))
+// Regular move:
+//   <span id="m<MOVE_COUNT>i<MOVE_ID>"><MOVE_COUNT>: <CELL_ID> : <SYMBOL> <UNDO_MOVE_LINK></span><br/>
+// Note:
+//   <span id="m0i<MOVE_ID>">Note: <SYMBOL> <UNDO_MOVE_LINK></span><br/> //*** change ID to "n<MOVE_ARR_INDEX>i<MOVE_ID>" ?
+function addToMoveListOnPage(moveId, cellId, symbol) {
+	moveCount = moveCounter
+	string = ""
+
+	// Add new <td> if needed
+	if ((moveCount > maxMovesPerColumn) && (moveCount % maxMovesPerColumn == 1))
 		$("table#moves tr").append("<td></td>")
-	string = "<span id=\"m" + moveCounter //*** Add moveId to span's ID
-				+ "\">"
-				+ moveCounter + ": "
+
 	if (cellId == "0") {
-		string = "<span id=\"i" + moveId + "\">Note: " //*** Add moveId to span's ID to allow notes to be deleted
+		// Note rather than a regular move
+		moveCount = 0
+		string = "<span id=\"m0i" + moveId + "\">Note: " + symbol + " " 
+			+ getUndoMoveLink(moveCount, moveId, cellId, symbol) + "</span><br/>"
 	} else {
-		string = string + cellId + " : " 
+		// Regular move
+		string = "<span id=\"m" + moveCount + "i" + moveId + "\">" + moveCount + " : " 
+			+ cellId + " : " + symbol + " " + getUndoMoveLink(moveCount, moveId, cellId, symbol)
+			+ "</span><br/>"
 		moveCounter++
 	}
-	string = string + newSymbol 
-	if (moveId != -1) {
-		string = string + " " + getUndoMoveLink(moveCounter, moveId, cellId, newSymbol)
-	}
-	string = string + "</span></br>"
 	$("table#moves td:last-of-type").append(string)
+
+	return moveCount
+}
+
+function addUndoMoveLinkToPage(moveId, cellId, symbol) {
+	string = " " + getUndoMoveLink(moveCount, moveId, cellId, symbol)
+	$("table#moves td span#m" + moveCount + "i-1").append(string)
 }
 
 function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
-	string = "<a href=\"" + undoMovesUrl + "/" + moveId 
-				+ "\" data-confirm=\"Are you sure you want to undo this move (#"
-				+ moveCount + ": " + cellId + " : " + symbol //*** Modify if move is a note
-				+ ") and all moves after it?\" data-method=\"post\" >(x)</a>"
+	string = ""
+	if (moveId != -1) {
+		string = "<a href=\"" + undoMovesUrl + "/" + moveId 
+					+ "\" data-confirm=\"Are you sure you want to undo this move ("
+						+ (moveCount == 0 ? "Note: " : 	(moveCount + ": " + cellId + " : ") )
+						+ symbol + ") and all moves after it?\" data-method=\"post\" >(x)</a>"
+	}
 	return string
+}
+
+function updateMoveIdOnMoveListOnPage(moveCount, moveId) {
+	$("table#moves td span#m" + moveCount + "i-1").attr("id", "m" + moveCount + "i" + moveId)
 }
 
 
