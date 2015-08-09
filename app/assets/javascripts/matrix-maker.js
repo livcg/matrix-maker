@@ -6,7 +6,7 @@ ADD_MOVE_URL = location.href + "/moves"
 UNDO_MOVES_URL = location.href + "/undomoves"
 ADD_NOTE_URL = location.href + "/addmovenote"
 MAX_MOVES_PER_COLUMN = 10
-MAX_MOVES_PER_ROW = 150
+MAX_MOVES_PER_ROW = 100
 DEFAULT_MOVE_ID = -1
 NOTE_CELL_ID = "0"
 SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
@@ -147,7 +147,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	$("table#moves tr:last-of-type td:last-of-type").append(string)
 
 	// Update last move in current row's <th>
-	$("table#moves tr:last-of-type th span.last-count").text(moveCount)
+	$("table#moves tr:last-of-type th span.last-count").text(moveCount) //*** Optimize this on page load
 
 	return moveCount
 }

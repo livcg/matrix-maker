@@ -76,8 +76,9 @@ x.   List moves in JS vs. erb
 x.   When adding a move, undo link isn't always getting added to the move list on the page; moveCounter is off
 x.   When note is added, clear note field
 x.   When move table gets too wide, add a new row
+x.   Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
 [ I'M HERE ]
-     Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
+     When note is added as 1st move in list, td count in move table is wrong?
      Fix styling of table of moves
      When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
@@ -86,6 +87,7 @@ x.   When move table gets too wide, add a new row
      Display moves in table format?
      Add a way to mark the game as solved
      Add notes field
+     Notify player when a all but 1 cell for a combo of options is x'd out?
      Add a category section
 x.     Move button next to text box
        Move section up?
@@ -106,3 +108,4 @@ x.     Move button next to text box
 * Don't allow cells that don't have corresponding option names to be clicked on?
 * Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
+* Implement branching moves or copying a game up to a certain move
