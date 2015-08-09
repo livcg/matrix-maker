@@ -101,7 +101,10 @@ $(document).ready(function() {
 
 		// Update server
     	$.post(ADD_NOTE_URL, { note: note }
-		).success(function(data) {
+		).done(function() {
+			// Clear note field
+			$("div#note input").prop("value", "")
+		}).success(function(data) {
 			// Update moves array w/ the new moveId
 			moveId = data
 			moves[moveArrIndex][0] = moveId

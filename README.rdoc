@@ -49,6 +49,8 @@ x.  When move is made, update view's list of moves
 x. Add undo moves function
 x. Add a way to mark off a block of moves, e.g. "initial pass"
 x. On heroku, adding a move note results in an error - Rmv byebug line!
+x. Change adding note to be an AJAX call
+x. Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
 * Expand on README
 * Fix styling - See https://css-tricks.com/complete-guide-table-element/
 ** Use col & colgroup elements
@@ -72,10 +74,13 @@ x.   Refactor views/matrices/show.html.erb
 x.   List moves in a table, 10 moves per column
 x.   List moves in JS vs. erb
 x.   When adding a move, undo link isn't always getting added to the move list on the page; moveCounter is off
+x.   When note is added, clear note field
+[ I'M HERE ]
+     When move table gets too wide, add a new row
+     Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
      When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
-     Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
      Change colour of th's for options (e.g. lightseagreen); add class="option"?
      Display moves in table format?
      Add a way to mark the game as solved
@@ -98,8 +103,5 @@ x.     Move button next to text box
 * Use max/actual # of options/category instead of # of options for 1st category to determine how many cells there are per row
 * Remove unused columns in DB
 * Don't allow cells that don't have corresponding option names to be clicked on?
-* Use jQuery.post instead of JQuery.ajax(method: "POST", ...)
 * Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
-[ I'M HERE ]
-* Change adding note to be an AJAX call
