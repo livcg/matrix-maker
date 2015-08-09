@@ -75,9 +75,10 @@ x.   List moves in a table, 10 moves per column
 x.   List moves in JS vs. erb
 x.   When adding a move, undo link isn't always getting added to the move list on the page; moveCounter is off
 x.   When note is added, clear note field
+x.   When move table gets too wide, add a new row
 [ I'M HERE ]
-     When move table gets too wide, add a new row
      Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
+     Fix styling of table of moves
      When th:hover, highlight the relevant row/column
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board

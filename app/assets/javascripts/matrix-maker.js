@@ -6,6 +6,7 @@ ADD_MOVE_URL = location.href + "/moves"
 UNDO_MOVES_URL = location.href + "/undomoves"
 ADD_NOTE_URL = location.href + "/addmovenote"
 MAX_MOVES_PER_COLUMN = 10
+MAX_MOVES_PER_ROW = 150
 DEFAULT_MOVE_ID = -1
 NOTE_CELL_ID = "0"
 SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
@@ -128,9 +129,11 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	textPrefix = moveCount + ": " + cellId + " : "
 	string = ""
 
-	// Add new <td> if needed
+	// If needed, add new <tr> or <td>
+	if (moveCount % MAX_MOVES_PER_ROW == 1)
+		$("table#moves").append("<tr><th>Moves " + moveCount + "-<span class=\"last-count\"></span></th></tr>")
 	if (moveCount % MAX_MOVES_PER_COLUMN == 1)
-		$("table#moves tr").append("<td></td>")
+		$("table#moves tr:last-of-type").append("<td></td>")
 
 	if (cellId == NOTE_CELL_ID) {
 		// Note rather than a regular move
@@ -141,7 +144,10 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	}
 	string = "<span id=\"" + spanId + "\">" + textPrefix + symbol + " " 
 			+ getUndoMoveLink(moveCount, moveId, cellId, symbol, moveArrIndex) + "</span><br/>"
-	$("table#moves td:last-of-type").append(string)
+	$("table#moves tr:last-of-type td:last-of-type").append(string)
+
+	// Update last move in current row's <th>
+	$("table#moves tr:last-of-type th span.last-count").text(moveCount)
 
 	return moveCount
 }
