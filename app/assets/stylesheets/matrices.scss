@@ -2,9 +2,18 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+body {
+	margin: 10px 20px 10px 20px;
+}
+
 table.matrix {
 	border: 1px solid black;
 	border-collapse: collapse;
+}
+
+table.matrix th,
+table.matrix td {
+	padding: 2px;
 }
 
 tr.oddRowGroup td.oddColumnGroup:not(.hover),
@@ -12,7 +21,15 @@ tr.evenRowGroup td.evenColumnGroup:not(.hover) {
     background-color: lightgray;
 }
 
+table.matrix tr.header th {
+	text-align: center;	
+}
+
 table.matrix th:not(.hover) {
+	background-color: #C6E4EE;
+}
+
+table.matrix th.option:not(.hover) {
 	background-color: lightblue;
 }
 
@@ -26,7 +43,7 @@ table.matrix td.cell {
 }
 
 table.matrix tr:hover td, tr:hover th, td.hover, th.hover {
-	background-color: yellow;
+	background-color: #FFFF66;
 }
 
 table#moves {
