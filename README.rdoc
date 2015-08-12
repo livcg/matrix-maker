@@ -34,7 +34,7 @@ x.  Add info to index page
 x. Remove [e] & Add category links in matrix for now
 x. Fix styling ...
 x.   In show matrix
-x.     Categories section
+x.     "Categories" section
 x.       [show] => [edit options]
 x.       [edit] => [edit name]
 x.       List options
@@ -77,35 +77,38 @@ x.   When adding a move, undo link isn't always getting added to the move list o
 x.   When note is added, clear note field
 x.   When move table gets too wide, add a new row
 x.   Incorporate Bootstrap - http://getbootstrap.com/examples/theme/
+x.   When th:hover, highlight the relevant row/column
+x.   Change colour of th's for options (e.g. lightseagreen); add class="option"?
+x.   Display moves in table format
+x.   Keep column & row headers always visible - See https://css-tricks.com/persistent-headers/
 [ I'M HERE ]
+     Dynamically determine width of th.r0.c0
+     Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
      When note is added as 1st move in list, td count in move table is wrong?
-     Fix styling of table of moves
-     When th:hover, highlight the relevant row/column
+     Fix styling of moves table
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
-     Change colour of th's for options (e.g. lightseagreen); add class="option"?
-     Display moves in table format?
      Add a way to mark the game as solved
-     Add notes field
-     Notify player when a all but 1 cell for a combo of options is x'd out?
-     Add a category section
+     Add notes field for matrix
+     Notify player when all but 1 cell for a combo of options is x'd out? Or indicate hint?
+     Don't allow cells that don't have corresponding option names to be clicked on?
+     "Add a category" section
 x.     Move button next to text box
        Move section up?
        Change button text to "Add"
 ** Etc.
+* Edit categories & options on the show matrix page
 * Write methods/helpers for sorting matrices, categories, and options
 * Add tests
 * Remove dupe code in views/matrices/show.html.erb
 * Build simple v2
-** Create default matrix w/ 2 categories & 2 options each
-** Make clicking on matrix labels change label to editable field
+    Create default matrix w/ 2 categories & 2 options each
+    Make clicking on matrix labels change label to editable field
 * Allow categories & options to be reordered
 * Automatically sort options per category
 * Confirm deleting matrix/category deletes related options
 * Confirm setup of seeds.db; don't hardcode matrix_id's & category_id's?
 * Use max/actual # of options/category instead of # of options for 1st category to determine how many cells there are per row
 * Remove unused columns in DB
-* Don't allow cells that don't have corresponding option names to be clicked on?
-* Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
 * Implement branching moves or copying a game up to a certain move

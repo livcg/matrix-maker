@@ -37,6 +37,12 @@ table.matrix th.vertical {
 	text-align: left;
 }
 
+.floatingHeader {
+  position: 	fixed;
+  top: 			0;
+  visibility: 	hidden;
+}
+
 table.matrix td.cell {
 	width: 25px;
 	text-align: center;

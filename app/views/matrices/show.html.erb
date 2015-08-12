@@ -31,63 +31,65 @@
 			categoriesForRows = [ categories.first ].concat(categories.drop(2).reverse)
 		%>
 
-		<%# Row 1: Column #'s for cells %>
-		<tr class="header">
-			<%# Blank top left corner %>
-			<th colspan="3" rowspan="3" class="r0 c0">&nbsp;</th>
+		<thead class="header">
+			<%# Row 1: Column #'s for cells %>
+			<tr class="header">
+				<%# Blank top left corner %>
+				<th colspan="3" rowspan="3" class="r0 c0">&nbsp;</th>
 
-			<%# c# %>
-			<%
-				numCols = 0
-				categoriesForColumns.each do |category| 
-					numCols += category.options.count
-					if category.options.count < minNumOptions
-						numCols += minNumOptions
-					end
-				end
-				cCount = 1			
-			%>
-			<% for i in 1..numCols do %>
-				<th class="c<%= cCount %>">
-					c<%= cCount %>
-				</th>
-				<% cCount += 1 %>
-			<% end %>
-		</tr>
-
-		<%# Row 2: Category 2..N %>
-		<tr class="header">			
-			<% cCount = 0 %>
-			<% categoriesForColumns.each do |category| %>
-				<% 
-					numCols = category.options.count < minNumOptions ? minNumOptions : category.options.count
-					classes = (1..numCols).map() { |i| "c" + (cCount += 1).to_s }.join(" ")
-				%>
-				<th colspan="<%= numCols %>" class="<%= classes %>">
-					<%= category.name %>
-				</th>
-			<% end %>
-		</tr>
-		
-		<%# Row 3: Options for categories 2..N %>
-		<tr class="header">
-			<% cCount = 0 %>
-			<% categoriesForColumns.each do |category| %>
-				<% 
-					options = category.options.sort_by { |option| option.created_at }
-					if options.count < minNumOptions
-						for i in (options.count + 1)..minNumOptions
-							options.push(" ") #*** Use &nbsp;
+				<%# c# %>
+				<%
+					numCols = 0
+					categoriesForColumns.each do |category| 
+						numCols += category.options.count
+						if category.options.count < minNumOptions
+							numCols += minNumOptions
 						end
 					end
+					cCount = 1			
 				%>
-				<% options.each do |option| %>
-					<th class="option c<%= cCount += 1 %>">
-						<%= option.is_a?(String) ? option : option.name %>
+				<% for i in 1..numCols do %>
+					<th class="c<%= cCount %>">
+						c<%= cCount %>
+					</th>
+					<% cCount += 1 %>
+				<% end %>
+			</tr>
+
+			<%# Row 2: Category 2..N %>
+			<tr class="header">			
+				<% cCount = 0 %>
+				<% categoriesForColumns.each do |category| %>
+					<% 
+						numCols = category.options.count < minNumOptions ? minNumOptions : category.options.count
+						classes = (1..numCols).map() { |i| "c" + (cCount += 1).to_s }.join(" ")
+					%>
+					<th colspan="<%= numCols %>" class="<%= classes %>">
+						<%= category.name %>
 					</th>
 				<% end %>
-			<% end %>
-		</tr>
+			</tr>
+			
+			<%# Row 3: Options for categories 2..N %>
+			<tr class="header">
+				<% cCount = 0 %>
+				<% categoriesForColumns.each do |category| %>
+					<% 
+						options = category.options.sort_by { |option| option.created_at }
+						if options.count < minNumOptions
+							for i in (options.count + 1)..minNumOptions
+								options.push(" ") #*** Use &nbsp;
+							end
+						end
+					%>
+					<% options.each do |option| %>
+						<th class="option c<%= cCount += 1 %>">
+							<%= option.is_a?(String) ? option : option.name %>
+						</th>
+					<% end %>
+				<% end %>
+			</tr>
+		</thead>
 
 		<%# Row 4 on: Category 1 & its options, then Category N-1 & its options, etc. %>
 		<% 	rCount = 1 %>		

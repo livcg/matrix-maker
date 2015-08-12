@@ -15,6 +15,18 @@ moveCounter = 1
 
 $(document).ready(function() {
 
+	// Make matrix table headers stick when scrolling down the table
+   var clonedHeaderRow;
+   $("table.matrix").each(function() {
+       clonedHeaderRow = $("thead.header", this);
+       clonedHeaderRow
+         .before(clonedHeaderRow.clone())
+         .css("width", clonedHeaderRow.width())
+         .addClass("floatingHeader"); 
+       $("th.r0.c0", clonedHeaderRow).css("width", $("th.r0.c0", this).css("width"))
+   });
+   $(window).scroll(updateTableHeaders).trigger("scroll");  
+
 	// Add class="hover" to current row's and column's cells
    	var allCells = $("th, td")
    	allCells.mouseenter(function() {
@@ -180,3 +192,23 @@ function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
 	}
 	return string
 }
+
+function updateTableHeaders() {
+   $("table.matrix").each(function() {
+       var el             = $(this),
+           offset         = el.offset(),
+           scrollTop      = $(window).scrollTop(),
+           floatingHeader = $(".floatingHeader", this)
+       
+       if ((scrollTop > offset.top) && (scrollTop < offset.top + el.height())) {
+           floatingHeader.css({
+            "visibility": "visible"
+           });
+       } else {
+           floatingHeader.css({
+            "visibility": "hidden"
+           });      
+       };
+   });
+}
+
