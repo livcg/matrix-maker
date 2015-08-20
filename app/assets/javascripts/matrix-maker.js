@@ -14,6 +14,7 @@ SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
 moveCounter = 1
 addMoveTableRow = true
 addMoveTableColumn = true
+moveTableHeadingColspan = MAX_MOVES_PER_ROW / MAX_MOVES_PER_COLUMN
 
 $(document).ready(function() {
 
@@ -144,8 +145,9 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	string = ""
 
 	// If needed, add new <tr> or <td>
-	if (addMoveTableRow) {
-		$("table#moves").append("<tr><th>Moves " + moveCount + "-<span class=\"last-count\"></span></th></tr>")
+	if (addMoveTableRow) {		
+		$("table#moves span.last-count").removeClass("last-count")
+		$("table#moves").append("<tr><th colspan=\"" + moveTableHeadingColspan + "\">Moves " + moveCount + "-<span class=\"last-count\"></span>:</th></tr><tr></tr>")
 		addMoveTableRow = false
 	}
 	if (addMoveTableColumn) {
@@ -168,7 +170,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	$("table#moves tr:last-of-type td:last-of-type").append(string)
 
 	// Update last move in current row's <th>
-	$("table#moves tr:last-of-type th span.last-count").text(moveCount) //*** Optimize this on page load
+	$("table#moves span.last-count").text(moveCount) //*** Optimize this on page load
 
 	return moveCount
 }
