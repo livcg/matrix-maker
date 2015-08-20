@@ -81,10 +81,12 @@ x.   When th:hover, highlight the relevant row/column
 x.   Change colour of th's for options (e.g. lightseagreen); add class="option"?
 x.   Display moves in table format
 x.   Keep column & row headers always visible - See https://css-tricks.com/persistent-headers/
+x.   Dynamically determine width of th.r0.c0
+x.   When note is added as 1st move in list, td count in move table is wrong?
 [ I'M HERE ]
-     Dynamically determine width of th.r0.c0
+     Change move table row header into an entire row instead of the 1st column
+     Make left headers sticky when scrolling sideways
      Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
-     When note is added as 1st move in list, td count in move table is wrong?
      Fix styling of moves table
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
@@ -112,3 +114,5 @@ x.     Move button next to text box
 * Remove unused columns in DB
 * On heroku, adding a move sometimes results in bad insertion of undo move link?
 * Implement branching moves or copying a game up to a certain move
+* Replay moves until a certain move #; or replay until all cells in a certain set (row/column/etc.) are now in their current state
+* On hover over a matrix table cell, highlight move table entries relevant to that cell

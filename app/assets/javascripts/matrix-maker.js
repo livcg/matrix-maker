@@ -12,6 +12,8 @@ NOTE_CELL_ID = "0"
 SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
 
 moveCounter = 1
+addMoveTableRow = true
+addMoveTableColumn = true
 
 $(document).ready(function() {
 
@@ -142,17 +144,24 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	string = ""
 
 	// If needed, add new <tr> or <td>
-	if (moveCount % MAX_MOVES_PER_ROW == 1)
+	if (addMoveTableRow) {
 		$("table#moves").append("<tr><th>Moves " + moveCount + "-<span class=\"last-count\"></span></th></tr>")
-	if (moveCount % MAX_MOVES_PER_COLUMN == 1)
+		addMoveTableRow = false
+	}
+	if (addMoveTableColumn) {
 		$("table#moves tr:last-of-type").append("<td></td>")
-
+		addMoveTableColumn = false		
+	}
 	if (cellId == NOTE_CELL_ID) {
 		// Note rather than a regular move
 		textPrefix = "Note: "
 	} else {
 		// Regular move
 		moveCounter++
+		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_ROW == 1))
+			addMoveTableRow = true
+		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_COLUMN == 1))
+			addMoveTableColumn = true
 	}
 	string = "<span id=\"" + spanId + "\">" + textPrefix + symbol + " " 
 			+ getUndoMoveLink(moveCount, moveId, cellId, symbol, moveArrIndex) + "</span><br/>"
