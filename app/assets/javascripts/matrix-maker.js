@@ -133,6 +133,7 @@ $(document).ready(function() {
     })
 })
 
+//*** Update?
 // Regular move:
 //   <span id="m<MOVE_COUNT>i<MOVE_ID>"><MOVE_COUNT>: <CELL_ID> : <SYMBOL> <UNDO_MOVE_LINK></span><br/>
 // Note:
@@ -141,13 +142,15 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	// Defaults for a regular move (not a note)
 	moveCount = moveCounter
 	spanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
-	textPrefix = moveCount + ": " + cellId + " : "
+	//*** textPrefix = moveCount + ": " + cellId + " : "
+	textPrefix = ""
 	string = ""
 
 	// If needed, add new <tr> or <td>
-	if (addMoveTableRow) {		
+	if (addMoveTableRow) {
 		$("table#moves span.last-count").removeClass("last-count")
-		$("table#moves").append("<tr><th colspan=\"" + moveTableHeadingColspan + "\">Moves " + moveCount + "-<span class=\"last-count\"></span>:</th></tr><tr></tr>")
+		$("table#moves").append("<tr><th colspan=\"" + moveTableHeadingColspan + "\">Moves " + moveCount + 
+			"-<span class=\"last-count\"></span>:</th></tr><tr></tr>")
 		addMoveTableRow = false
 	}
 	if (addMoveTableColumn) {
@@ -156,9 +159,13 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	}
 	if (cellId == NOTE_CELL_ID) {
 		// Note rather than a regular move
-		textPrefix = "Note: "
+		// textPrefix = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
+		// 	+ "\" data-confirm=\"Are you sure you want to remove this note ("
+		// 	+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>: "
+		textPrefix = getMoveNumberHtml(moveCount, moveId, cellId, symbol) + ": "
 	} else {
 		// Regular move
+		textPrefix = getMoveNumberHtml(moveCount, moveId, cellId, symbol) + ": " + cellId + " : "
 		moveCounter++
 		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_ROW == 1))
 			addMoveTableRow = true
@@ -166,7 +173,8 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 			addMoveTableColumn = true
 	}
 	string = "<span id=\"" + spanId + "\">" + textPrefix + symbol + " " 
-			+ getUndoMoveLink(moveCount, moveId, cellId, symbol, moveArrIndex) + "</span><br/>"
+			//*** + getUndoMoveLink(moveCount, moveId, cellId, symbol) 
+			+ "</span><br/>"
 	$("table#moves tr:last-of-type td:last-of-type").append(string)
 
 	// Update last move in current row's <th>
@@ -187,19 +195,45 @@ function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
 }
 
 function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, moveArrIndex) {
-	string = " " + getUndoMoveLink(moveCount, moveId, cellId, symbol, moveArrIndex)
+	moveNumberHtml = getMoveNumberHtml(moveCount, moveId, cellId, symbol, moveArrIndex)
 	oldSpanId = getMoveSpanId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
 	newSpanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
-	$("table#moves td span#" + oldSpanId).append(string).attr("id", newSpanId)
+	$("table#moves td span#" + oldSpanId + " span.move-count").html(moveNumberHtml).attr("id", newSpanId)
 }
 
-function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
+// function getUndoMoveLink(moveCount, moveId, cellId, symbol) {
+// 	string = ""
+// 	if (cellId == NOTE_CELL_ID)	{
+// 		string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
+// 			+ "\" data-confirm=\"Are you sure you want to remove this note ("
+// 			+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>: "
+// 	} else if (moveId != DEFAULT_MOVE_ID) {
+// 		string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
+// 			+ "\" data-confirm=\"Are you sure you want to undo "
+// 			+ (cellId == NOTE_CELL_ID ? " this note \(" : "move " + moveCount + "(" + cellId + " : ")
+// 			+ symbol + ") and all moves after it?\" data-method=\"post\" >" + moveCount + "</a>: "
+// 	} else {
+// 		string = moveCount + ": "
+// 	}
+// 	return string
+// }
+
+function getMoveNumberHtml(moveCount, moveId, cellId, symbol) {
 	string = ""
-	if (moveId != DEFAULT_MOVE_ID) {
+	if (cellId == NOTE_CELL_ID) {
+		if (moveId == DEFAULT_MOVE_ID) {
+			string = "<span class=\"move-count\">Note</span>"
+		} else {
+			string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
+				+ "\" data-confirm=\"Are you sure you want to remove this note ("
+				+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>"
+		}
+	} else if (moveId != DEFAULT_MOVE_ID) {
 		string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
-					+ "\" data-confirm=\"Are you sure you want to undo this move ("
-						+ (cellId == NOTE_CELL_ID ? "Note: " : 	(moveCount + ": " + cellId + " : ") )
-						+ symbol + ") and all moves after it?\" data-method=\"post\" >(x)</a>"
+					+ "\" data-confirm=\"Are you sure you want to undo move " + moveCount + " (" + cellId + " : "
+						+ symbol + ") and all moves after it?\" data-method=\"post\" >" + moveCount + "</a>"
+	} else {
+		string = "<span class=\"move-count\">" + moveCount + "</span>"
 	}
 	return string
 }
