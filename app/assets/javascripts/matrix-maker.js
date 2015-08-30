@@ -89,7 +89,8 @@ $(document).ready(function() {
 		tdElement.html(newSymbol)
 
 		// Update move list on the page
-		moveCount = addToMoveListOnPage(DEFAULT_MOVE_ID, cellId, newSymbol, moveArrIndex)
+//***		moveCount = addToMoveListOnPage(DEFAULT_MOVE_ID, cellId, newSymbol, moveArrIndex)
+		moveCount = addToMoveListOnPage2(DEFAULT_MOVE_ID, cellId, newSymbol, moveArrIndex)
 
 		// Update server
 		$.post(ADD_MOVE_URL,
@@ -100,7 +101,8 @@ $(document).ready(function() {
 			moves[moveArrIndex][0] = moveId
 
 			// Update HTML - Add undo move link, update td's ID
-			updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, newSymbol, moveArrIndex)
+//***			updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, newSymbol, moveArrIndex)
+			updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, newSymbol, moveArrIndex)
 		}).fail(function() {
 			alert("Warning: Failed to save your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
@@ -195,7 +197,8 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 
 	// Defaults for a regular move (not a note)
 	moveCount = moveCounter
-	spanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
+//***	spanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
+	moveTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
 
 	// If needed, add new row/column/table
 	if (addMoveTableRow2) {
@@ -225,7 +228,7 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 			addMoveTableColumn2 = true
 	}
 //	string = "<span id=\"" + spanId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></span>"
-	string = "<tr><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></tr>"
+	string = "<tr id=\"" + moveTrId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></tr>"
 	$("table.moves table.column-of-moves:last-of-type").last().append(string)
 
 	// Update last move in current row's <th>
@@ -234,6 +237,7 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 	return moveCount
 }
 
+//*** delete eventually
 function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
 	spanId = ""
 	if (cellId == NOTE_CELL_ID) {
@@ -245,7 +249,25 @@ function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
 	return spanId
 }
 
+function getMoveTrId(moveCount, moveId, cellId, moveArrIndex) {
+	moveTrId = ""
+	if (cellId == NOTE_CELL_ID) {
+		// Note
+		moveTrId = "n" + moveArrIndex + "i" + moveId
+	}  else {
+		moveTrId = "m" + moveCount + "i" + moveId
+	}
+	return moveTrId
+}
+
 function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, moveArrIndex) {
+	moveNumberHtml = getMoveNumberHtml(moveCount, moveId, cellId, symbol, moveArrIndex)
+	oldSpanId = getMoveSpanId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
+	newSpanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
+	$("table#moves td span#" + oldSpanId + " span.move-count").html(moveNumberHtml).attr("id", newSpanId)
+}
+
+function updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, symbol, moveArrIndex) {
 	moveNumberHtml = getMoveNumberHtml(moveCount, moveId, cellId, symbol, moveArrIndex)
 	oldSpanId = getMoveSpanId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
 	newSpanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
