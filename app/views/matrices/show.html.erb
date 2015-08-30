@@ -182,7 +182,7 @@
 
 
 <h2>Categories &amp; Options</h2>
-<%= render @matrix.categories %>
+<%= render @matrix.categories.sort_by { |c| c.created_at } %>
 
 <br/><br/>
 <hr/>
