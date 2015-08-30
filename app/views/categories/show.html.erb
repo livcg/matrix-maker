@@ -1,6 +1,6 @@
 <h2>Category: <%= @category.name %></h2>
 
-[ <%= link_to 'Edit name', edit_matrix_category_path(@category.matrix, @category) %> ]
+<%= link_to '[ edit name ]', edit_matrix_category_path(@category.matrix, @category) %>
 
 <hr/>
 
@@ -13,17 +13,15 @@
 <h2>Add an option</h2>
 <%= form_for([@matrix, @category, @category.options.build]) do |f| %>
   <p>
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </p>
-  <p>
-    <%= f.submit %> <%# Update Category button should be Add Option? %>
+    <%= f.label :name %> <%= f.text_field :name %>
+    <%= f.submit "Add option" %>
   </p>
 <% end %>
 
+<br/><br/>
 <hr/>
 
-<% link_text = "Show matrix " + @matrix.name %>
+<% link_text = "[ Show matrix " + @matrix.name + " ]" %>
 <%= link_to link_text, matrix_path(@matrix) %>
 
 
