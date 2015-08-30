@@ -14,6 +14,8 @@ SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
 moveCounter = 1
 addMoveTableRow = true
 addMoveTableColumn = true
+addMoveTableRow2 = true //***
+addMoveTableColumn2 = true //***
 moveTableHeadingColspan = MAX_MOVES_PER_ROW / MAX_MOVES_PER_COLUMN
 
 $(document).ready(function() {
@@ -59,7 +61,8 @@ $(document).ready(function() {
 		if ((cellId != undefined) && (cellId.length > 0) && (symbol != undefined) && (symbol != null)) { //*** ick
 			//*** console.log("Move: " + cellId + " : " + symbol)
 			$("td#" + cellId).text(symbol)
-			addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex)
+//***			addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex)
+			addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex)
 		} 
 	}
 
@@ -180,6 +183,53 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 
 	// Update last move in current row's <th>
 	$("table#moves span.last-count").text(moveCount) //*** Optimize this on page load
+
+	return moveCount
+}
+
+// Regular move:
+//   <td class="move-count"><MOVE_COUNT></td> <td><CELL_ID></td> <td><SYMBOL></td>
+function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
+	textPrefix = ""
+	string = ""
+
+	// Defaults for a regular move (not a note)
+	moveCount = moveCounter
+	spanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
+
+	// If needed, add new row/column/table
+	if (addMoveTableRow2) {
+		$("table.moves span.last-count").removeClass("last-count")
+		$("table.moves").append("<tr><th colspan=\"" + moveTableHeadingColspan + "\">Moves " + moveCount + 
+			"-<span class=\"last-count\"></span>:</th></tr><tr class=\"row-of-moves\"></tr>")
+		addMoveTableRow2 = false
+	}
+	if (addMoveTableColumn2) {
+		$("table.moves tr.row-of-moves:last-of-type")
+			.append("<td><table class=\"column-of-moves\"><!--<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>--></table></td>") //***
+		addMoveTableColumn2 = false		
+	}
+	if (cellId == NOTE_CELL_ID) {
+		// Note rather than a regular move
+		// textPrefix = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
+		// 	+ "\" data-confirm=\"Are you sure you want to remove this note ("
+		// 	+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>: "
+		textPrefix = getMoveNumberHtml(moveCount, moveId, cellId, symbol) + ": "
+	} else {
+		// Regular move
+		textPrefix = getMoveNumberHtml(moveCount, moveId, cellId, symbol) + ": " + cellId + " : "
+		moveCounter++
+		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_ROW == 1))
+			addMoveTableRow2 = true
+		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_COLUMN == 1))
+			addMoveTableColumn2 = true
+	}
+//	string = "<span id=\"" + spanId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></span>"
+	string = "<tr><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></tr>"
+	$("table.moves table.column-of-moves:last-of-type").last().append(string)
+
+	// Update last move in current row's <th>
+	$("table.moves span.last-count").text(moveCount) //*** Optimize this on page load
 
 	return moveCount
 }
