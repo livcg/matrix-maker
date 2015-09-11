@@ -150,79 +150,12 @@
 
 <h2>Moves</h2>
 
+<p>Click on the <strong>Move#</strong> to undo the move and all the moves after it</p>
+
 <table class="moves">
-<%# ***
-	<tr>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>2</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>3</td><td>r1c1</td><td>X</td></tr>
-			</table>
-		</td>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-			</table>
-		</td>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-			</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-				<tr><td>10</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>11</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>12</td><td>r1c1</td><td>X</td></tr>
-			</table>
-		</td>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-			</table>
-		</td>
-		<td>
-			<table>
-				<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-				<tr><td>1</td><td>r1c1</td><td>X</td></tr>
-			</table>
-		</td>
-	</tr>
---%>
 </table>
 
 <br/><br/>
-
-<p>Key:<br/>
-	<a href="/matrices/<%= @matrix.id %>/undomoves/<MOVE_ID>">&lt;MOVE_#&gt;</a> : &lt;CELL_ID&gt; : &lt;SYMBOL&gt; <br/>
-	Click on &lt;MOVE_#&gt; to undo the move and all moves after it
-</p>
-
-<table id="moves">
-</table>
 
 <script id="moves-data">
 	// Moves array - [ <MOVE_ID>, <CELL_ID>, <SYMBOL> ]

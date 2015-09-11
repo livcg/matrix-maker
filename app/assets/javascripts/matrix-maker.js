@@ -59,7 +59,6 @@ $(document).ready(function() {
 		cellId = move[1] 
 		symbol = move[2]
 		if ((cellId != undefined) && (cellId.length > 0) && (symbol != undefined) && (symbol != null)) { //*** ick
-			//*** console.log("Move: " + cellId + " : " + symbol)
 			$("td#" + cellId).text(symbol)
 			addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex)
 		} 
@@ -157,12 +156,12 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	if (addRowToMoveTable) {
 		$("table.moves span.last-count").removeClass("last-count")
 		$("table.moves").append("<tr><th colspan=\"" + moveTableHeadingColspan + "\">Moves " + moveCount + 
-			"-<span class=\"last-count\"></span>:</th></tr><tr class=\"row-of-moves\"></tr>")
+			"-<span class=\"last-count\"></span></th></tr><tr class=\"row-of-moves\"></tr>")
 		addRowToMoveTable = false
 	}
 	if (addColumnToMoveTable) {
 		$("table.moves tr.row-of-moves:last-of-type")
-			.append("<td><table class=\"column-of-moves\"><!--<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>--></table></td>") //***
+			.append("<td><table class=\"column-of-moves\"><tr><th>Move#</th><th>Cell</th><th>Symbol</th></tr></table></td>") //***
 		addColumnToMoveTable = false		
 	}
 
