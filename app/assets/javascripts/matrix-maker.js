@@ -223,8 +223,9 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 		string = "<tr>" + td1 + td2 + "</tr>"
 	} else {
 		// Regular move
-		td1 = "<td><a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"Are you sure you want to undo move " + moveCount + " (" + cellId + " : "
-			+ symbol + ") and all moves after it?\" data-method=\"post\" >" + moveCount + "</a></td>"
+		td1 = "<td><a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"Are you sure you want to undo move "
+			+ moveCount + " (" + cellId + " : \'" + (symbol? symbol : "&nbsp;") 
+			+ "\') and all moves after it?\" data-method=\"post\">" + moveCount + "</a></td>"
 		td2 = "<td>" + cellId + "</td>"
 		td3 = "<td>" + symbol + "</td>"
 		string = "<tr id=\"" + moveTrId + "\">" + td1 + td2 + td3 + "</tr>"
@@ -274,10 +275,17 @@ function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, mov
 }
 
 function updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, symbol, moveArrIndex) {
-	moveNumberHtml = getMoveNumberHtml(moveCount, moveId, cellId, symbol, moveArrIndex)
-	oldSpanId = getMoveSpanId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
-	newSpanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
-	$("table#moves td span#" + oldSpanId + " span.move-count").html(moveNumberHtml).attr("id", newSpanId)
+	oldTrId = getMoveTrId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
+	newTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
+	td1Html = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"Are you sure you want to undo move "
+		+ moveCount + " (" + cellId + " : " + symbol + ") and all moves after it?\" data-method=\"post\" >" 
+		+ moveCount + "</a>"
+
+	// Add undo link to move count
+	$("table.moves tr#" + oldTrId + " td:first").html(td1Html)
+
+	// Update tr's ID attr
+	$("table.moves tr#" + oldTrId).attr("id", newTrId)
 }
 
 function getMoveNumberHtml(moveCount, moveId, cellId, symbol) {
