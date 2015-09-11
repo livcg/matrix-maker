@@ -198,7 +198,6 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 
 	// Defaults for a regular move (not a note)
 	moveCount = moveCounter
-//***	spanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
 	moveTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
 
 	// If needed, add new row/column/table
@@ -213,24 +212,32 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 			.append("<td><table class=\"column-of-moves\"><!--<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>--></table></td>") //***
 		addColumnToMoveTable = false		
 	}
+
+	// Add HTML for the new move
 	if (cellId == NOTE_CELL_ID) {
 		// Note rather than a regular move
-		// textPrefix = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
-		// 	+ "\" data-confirm=\"Are you sure you want to remove this note ("
-		// 	+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>: "
-		string = "<tr><td>Note</td><td colspan=\"2\">" + symbol + "</td></tr>"
+		td1 = "<td><a href=\"" + UNDO_MOVES_URL + "/" + moveId 
+			+ "\" data-confirm=\"Are you sure you want to remove this note (" + symbol 
+			+ ") and all moves after it?\" data-method=\"post\">Note</a></td>"
+		td2 = "<td colspan=\"2\">" + symbol + "</td>"
+		string = "<tr>" + td1 + td2 + "</tr>"
 	} else {
 		// Regular move
+		td1 = "<td><a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"Are you sure you want to undo move " + moveCount + " (" + cellId + " : "
+			+ symbol + ") and all moves after it?\" data-method=\"post\" >" + moveCount + "</a></td>"
+		td2 = "<td>" + cellId + "</td>"
+		td3 = "<td>" + symbol + "</td>"
+		string = "<tr id=\"" + moveTrId + "\">" + td1 + td2 + td3 + "</tr>"
+
 		moveCounter++
 		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_ROW == 1))
 			addRowToMoveTable = true
 		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_COLUMN == 1))
 			addColumnToMoveTable = true
-		string = "<tr id=\"" + moveTrId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></tr>"
 	}
 	$("table.moves table.column-of-moves:last-of-type").last().append(string)
 
-	// Update last move in current row's <th>
+	// Update last move count in heading
 	$("table.moves span.last-count").text(moveCount) //*** Optimize this on page load
 
 	return moveCount
