@@ -110,7 +110,7 @@ $(document).ready(function() {
 		return false
     })
 
-    // Add note to moves
+    // Add a note between moves
     $("div#note button").unbind("click").click(function() {
     	note = $("div#note input").prop("value")
 
@@ -131,12 +131,16 @@ $(document).ready(function() {
 			moves[moveArrIndex][0] = moveId
 
 			// Update HTML - Add undo move link, update td's ID
-			updateHtmlAfterAddMoveServerCall(moveCount, moveId, NOTE_CELL_ID, note, moveArrIndex)
+			updateHtmlAfterAddMoveServerCall2(moveCount, moveId, NOTE_CELL_ID, note, moveArrIndex)
 		}).fail(function() {
 			alert("Warning: Failed to save your note on the server - [ " + note + " ]")
 		})
     })
 })
+
+function isNoteMove(cellId) {
+	return (cellId == NOTE_CELL_ID)
+}
 
 // Regular move:
 //   <span id="m<MOVE_COUNT>i<MOVE_ID>"><span class="move-count"><MOVE_COUNT></span>: <CELL_ID> : <SYMBOL></span><br/>
@@ -165,7 +169,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 		$("table#moves tr:last-of-type").append("<td></td>")
 		addMoveTableColumn = false		
 	}
-	if (cellId == NOTE_CELL_ID) {
+	if (isNoteMove(cellId)) {
 		// Note rather than a regular move
 		// textPrefix = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
 		// 	+ "\" data-confirm=\"Are you sure you want to remove this note ("
@@ -194,8 +198,6 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 // Note:
 //   <td>Note</td> <td colspan="2"><NOTE></td>
 function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
-	string = ""
-
 	// Defaults for a regular move (not a note)
 	moveCount = moveCounter
 	moveTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
@@ -214,8 +216,7 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 	}
 
 	// Add HTML for the new move
-	if (cellId == NOTE_CELL_ID) {
-		// Note rather than a regular move
+	if (isNoteMove(cellId)) {
 		td1 = "<td><a href=\"" + UNDO_MOVES_URL + "/" + moveId 
 			+ "\" data-confirm=\"Are you sure you want to remove this note (" + symbol 
 			+ ") and all moves after it?\" data-method=\"post\">Note</a></td>"
@@ -247,8 +248,7 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 //*** delete eventually
 function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
 	spanId = ""
-	if (cellId == NOTE_CELL_ID) {
-		// Note
+	if (isNoteMove(cellId)) {
 		spanId = "n" + moveArrIndex + "i" + moveId
 	}  else {
 		spanId = "m" + moveCount + "i" + moveId
@@ -258,7 +258,7 @@ function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
 
 function getMoveTrId(moveCount, moveId, cellId, moveArrIndex) {
 	moveTrId = ""
-	if (cellId == NOTE_CELL_ID) {
+	if (isNoteMove(cellId)) {
 		// Note
 		moveTrId = "n" + moveArrIndex + "i" + moveId
 	}  else {
@@ -274,14 +274,25 @@ function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, mov
 	$("table#moves td span#" + oldSpanId + " span.move-count").html(moveNumberHtml).attr("id", newSpanId)
 }
 
+// Old HTML
+//   <tr id="m<MOVE#>i-1"><td><MOVE#></td>...</tr>
+// New HTML
+//   <tr id="m<MOVE#>i<MOVE_ID>"><td><a href ...><MOVE#></a></td>...</tr>
 function updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, symbol, moveArrIndex) {
 	oldTrId = getMoveTrId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
 	newTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
-	td1Html = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"Are you sure you want to undo move "
-		+ moveCount + " (" + cellId + " : " + symbol + ") and all moves after it?\" data-method=\"post\" >" 
-		+ moveCount + "</a>"
+	if (isNoteMove(cellId)) {
+		undoConfirmText = "Are you sure you want to remove this note (" + symbol + ") and all moves after it?"
+		td1Text = "Note"
+	} else {
+		undoConfirmText = "Are you sure you want to undo move " + moveCount + " (" + cellId + " : " + symbol
+			+ ") and all moves after it?"
+		td1Text = moveCount
+	}
+	td1Html = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"" + undoConfirmText 
+		+ "\" data-method=\"post\" >" + td1Text + "</a>"
 
-	// Add undo link to move count
+	// Add undo link
 	$("table.moves tr#" + oldTrId + " td:first").html(td1Html)
 
 	// Update tr's ID attr
@@ -290,7 +301,7 @@ function updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, symbol, mo
 
 function getMoveNumberHtml(moveCount, moveId, cellId, symbol) {
 	string = ""
-	if (cellId == NOTE_CELL_ID) {
+	if (isNoteMove(cellId)) {
 		if (moveId == DEFAULT_MOVE_ID) {
 			string = "<span class=\"move-count\">Note</span>"
 		} else {
