@@ -14,8 +14,8 @@ SYMBOLS = [ 'X', 'O', 'X?', 'O?', '' ]
 moveCounter = 1
 addMoveTableRow = true
 addMoveTableColumn = true
-addMoveTableRow2 = true //***
-addMoveTableColumn2 = true //***
+addRowToMoveTable = true //***
+addColumnToMoveTable = true //***
 moveTableHeadingColspan = MAX_MOVES_PER_ROW / MAX_MOVES_PER_COLUMN
 
 $(document).ready(function() {
@@ -191,8 +191,9 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 
 // Regular move:
 //   <td class="move-count"><MOVE_COUNT></td> <td><CELL_ID></td> <td><SYMBOL></td>
+// Note:
+//   <td>Note</td> <td colspan="2"><NOTE></td>
 function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
-	textPrefix = ""
 	string = ""
 
 	// Defaults for a regular move (not a note)
@@ -201,34 +202,32 @@ function addToMoveListOnPage2(moveId, cellId, symbol, moveArrIndex) {
 	moveTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
 
 	// If needed, add new row/column/table
-	if (addMoveTableRow2) {
+	if (addRowToMoveTable) {
 		$("table.moves span.last-count").removeClass("last-count")
 		$("table.moves").append("<tr><th colspan=\"" + moveTableHeadingColspan + "\">Moves " + moveCount + 
 			"-<span class=\"last-count\"></span>:</th></tr><tr class=\"row-of-moves\"></tr>")
-		addMoveTableRow2 = false
+		addRowToMoveTable = false
 	}
-	if (addMoveTableColumn2) {
+	if (addColumnToMoveTable) {
 		$("table.moves tr.row-of-moves:last-of-type")
 			.append("<td><table class=\"column-of-moves\"><!--<tr><th>Move #</th><th>Cell</th><th>Symbol</th></tr>--></table></td>") //***
-		addMoveTableColumn2 = false		
+		addColumnToMoveTable = false		
 	}
 	if (cellId == NOTE_CELL_ID) {
 		// Note rather than a regular move
 		// textPrefix = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
 		// 	+ "\" data-confirm=\"Are you sure you want to remove this note ("
 		// 	+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>: "
-		textPrefix = getMoveNumberHtml(moveCount, moveId, cellId, symbol) + ": "
+		string = "<tr><td>Note</td><td colspan=\"2\">" + symbol + "</td></tr>"
 	} else {
 		// Regular move
-		textPrefix = getMoveNumberHtml(moveCount, moveId, cellId, symbol) + ": " + cellId + " : "
 		moveCounter++
 		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_ROW == 1))
-			addMoveTableRow2 = true
+			addRowToMoveTable = true
 		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_COLUMN == 1))
-			addMoveTableColumn2 = true
+			addColumnToMoveTable = true
+		string = "<tr id=\"" + moveTrId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></tr>"
 	}
-//	string = "<span id=\"" + spanId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></span>"
-	string = "<tr id=\"" + moveTrId + "\"><td>" + moveCount + "</td><td>" + cellId + "</td><td>" + symbol + "</td></tr>"
 	$("table.moves table.column-of-moves:last-of-type").last().append(string)
 
 	// Update last move in current row's <th>

@@ -86,10 +86,13 @@ x.   When note is added as 1st move in list, td count in move table is wrong?
 x.   Change move table row header into an entire row instead of the 1st column
 x.   In Moves table, replace "(x)" to reduce clutter
 x.   Category listing - order by created
-[ I'M HERE ]
      Change the way undo moves work - Replace individual href's; when new move is added, move ID isn't known until server's response is received
      Make left headers of matrix sticky when scrolling sideways
      Fix styling of moves table
+[ I'M HERE ]
+       Handle notes
+       Handle undoing moves
+       Etc.
      When page is loaded, why don't previous moves always get displayed?
      Add button to clear board
      Add a way to mark the game as solved
