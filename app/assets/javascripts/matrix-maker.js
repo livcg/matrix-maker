@@ -30,7 +30,7 @@ $(document).ready(function() {
          .addClass("floatingHeader"); 
        $("th.r0.c0", clonedHeaderRow).css("width", $("th.r0.c0", this).css("width"))
    });
-   $(window).scroll(updateTableHeaders).trigger("scroll");  
+   $(window).scroll(updateMatrixTableHeaders).trigger("scroll");  
 
 	// Add class="hover" to current row's and column's cells
    	var allCells = $("th, td")
@@ -99,8 +99,7 @@ $(document).ready(function() {
 			moves[moveArrIndex][0] = moveId
 
 			// Update HTML - Add undo move link, update td's ID
-//***			updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, newSymbol, moveArrIndex)
-			updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, newSymbol, moveArrIndex)
+			updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, newSymbol, moveArrIndex)
 		}).fail(function() {
 			alert("Warning: Failed to save your move on the server - [ " + cellId + " : " + newSymbol + " ]")
 		})
@@ -129,7 +128,7 @@ $(document).ready(function() {
 			moves[moveArrIndex][0] = moveId
 
 			// Update HTML - Add undo move link, update td's ID
-			updateHtmlAfterAddMoveServerCall2(moveCount, moveId, NOTE_CELL_ID, note, moveArrIndex)
+			updateHtmlAfterAddMoveServerCall(moveCount, moveId, NOTE_CELL_ID, note, moveArrIndex)
 		}).fail(function() {
 			alert("Warning: Failed to save your note on the server - [ " + note + " ]")
 		})
@@ -197,17 +196,6 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 	return moveCount
 }
 
-//*** delete eventually
-function getMoveSpanId(moveCount, moveId, cellId, moveArrIndex) {
-	spanId = ""
-	if (isNoteMove(cellId)) {
-		spanId = "n" + moveArrIndex + "i" + moveId
-	}  else {
-		spanId = "m" + moveCount + "i" + moveId
-	}
-	return spanId
-}
-
 function getMoveTrId(moveCount, moveId, cellId, moveArrIndex) {
 	moveTrId = ""
 	if (isNoteMove(cellId)) {
@@ -219,18 +207,11 @@ function getMoveTrId(moveCount, moveId, cellId, moveArrIndex) {
 	return moveTrId
 }
 
-function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, moveArrIndex) {
-	moveNumberHtml = getMoveNumberHtml(moveCount, moveId, cellId, symbol, moveArrIndex)
-	oldSpanId = getMoveSpanId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
-	newSpanId = getMoveSpanId(moveCount, moveId, cellId, moveArrIndex)
-	$("table#moves td span#" + oldSpanId + " span.move-count").html(moveNumberHtml).attr("id", newSpanId)
-}
-
 // Old HTML
-//   <tr id="m<MOVE#>i-1"><td><MOVE#></td>...</tr>
+//   <tr id="m<MOVE#>i-1"> <td><MOVE#></td> ... </tr>
 // New HTML
-//   <tr id="m<MOVE#>i<MOVE_ID>"><td><a href ...><MOVE#></a></td>...</tr>
-function updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, symbol, moveArrIndex) {
+//   <tr id="m<MOVE#>i<MOVE_ID>"> <td><a href ...><MOVE#></a></td> ... </tr>
+function updateHtmlAfterAddMoveServerCall(moveCount, moveId, cellId, symbol, moveArrIndex) {
 	oldTrId = getMoveTrId(moveCount, DEFAULT_MOVE_ID, cellId, moveArrIndex)
 	newTrId = getMoveTrId(moveCount, moveId, cellId, moveArrIndex)
 	if (isNoteMove(cellId)) {
@@ -251,27 +232,7 @@ function updateHtmlAfterAddMoveServerCall2(moveCount, moveId, cellId, symbol, mo
 	$("table.moves tr#" + oldTrId).attr("id", newTrId)
 }
 
-function getMoveNumberHtml(moveCount, moveId, cellId, symbol) {
-	string = ""
-	if (isNoteMove(cellId)) {
-		if (moveId == DEFAULT_MOVE_ID) {
-			string = "<span class=\"move-count\">Note</span>"
-		} else {
-			string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
-				+ "\" data-confirm=\"Are you sure you want to remove this note ("
-				+ symbol + ") and all moves after it?\" data-method=\"post\">Note</a>"
-		}
-	} else if (moveId != DEFAULT_MOVE_ID) {
-		string = "<a href=\"" + UNDO_MOVES_URL + "/" + moveId 
-					+ "\" data-confirm=\"Are you sure you want to undo move " + moveCount + " (" + cellId + " : "
-						+ symbol + ") and all moves after it?\" data-method=\"post\" >" + moveCount + "</a>"
-	} else {
-		string = "<span class=\"move-count\">" + moveCount + "</span>"
-	}
-	return string
-}
-
-function updateTableHeaders() {
+function updateMatrixTableHeaders() {
    $("table.matrix").each(function() {
        var el             = $(this),
            offset         = el.offset(),
