@@ -16,8 +16,8 @@ table.matrix td {
 	padding: 2px;
 }
 
-tr.oddRowGroup td.oddColumnGroup:not(.hover),
-tr.evenRowGroup td.evenColumnGroup:not(.hover) {
+table.matrix tr.oddRowGroup td.oddColumnGroup:not(.hover),
+table.matrix tr.evenRowGroup td.evenColumnGroup:not(.hover) {
     background-color: lightgray;
 }
 
@@ -48,7 +48,10 @@ table.matrix td.cell {
 	text-align: center;
 }
 
-table.matrix tr:hover td, tr:hover th, td.hover, th.hover {
+table.matrix tr:hover td, 
+table.matrix tr:hover th, 
+table.matrix td.hover, 
+table.matrix th.hover {
 	background-color: #FFFF66;
 }
 
@@ -66,4 +69,9 @@ table#moves td {
 	border-collapse: collapse;
 	vertical-align: top;
 }
+
+table.moves table.column-of-moves tr.move:hover {
+	background-color: #FFFF66;
+}
+
 

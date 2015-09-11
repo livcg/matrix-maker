@@ -171,7 +171,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 			+ "\" data-confirm=\"Are you sure you want to remove this note (" + symbol 
 			+ ") and all moves after it?\" data-method=\"post\">Note</a></td>"
 		td2 = "<td colspan=\"2\">" + symbol + "</td>"
-		string = "<tr>" + td1 + td2 + "</tr>"
+		string = "<tr class=\"move\">" + td1 + td2 + "</tr>"
 	} else {
 		// Regular move
 		td1 = "<td><a href=\"" + UNDO_MOVES_URL + "/" + moveId + "\" data-confirm=\"Are you sure you want to undo move "
@@ -179,7 +179,7 @@ function addToMoveListOnPage(moveId, cellId, symbol, moveArrIndex) {
 			+ "\') and all moves after it?\" data-method=\"post\">" + moveCount + "</a></td>"
 		td2 = "<td>" + cellId + "</td>"
 		td3 = "<td>" + symbol + "</td>"
-		string = "<tr id=\"" + moveTrId + "\">" + td1 + td2 + td3 + "</tr>"
+		string = "<tr id=\"" + moveTrId + "\" class=\"move\">" + td1 + td2 + td3 + "</tr>"
 
 		moveCounter++
 		if ((moveCounter > 1) && (moveCounter % MAX_MOVES_PER_ROW == 1))
